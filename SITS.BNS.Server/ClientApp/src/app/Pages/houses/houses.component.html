@@ -1,0 +1,217 @@
+<p-card [style]="{'margin-bottom':'1rem'}">
+    <p-toast />
+
+    <div class="d-flex justify-content-between align-items-end" style="margin-bottom: 1rem; margin-top: 1rem;">
+        <div>
+            <h3 class="mb-0" style="font-weight: bold;">All Houses</h3>
+        </div>
+
+        <div class="d-flex align-items-center gap-3">
+        </div>
+    </div>
+
+    <div *ngIf="ViewFamilyMembers.length === 0" style="text-align: center; padding: 1rem;">
+        <div class="row">
+            <p-skeleton height="21rem" />
+        </div>
+    </div>
+
+    <p-table
+        *ngIf="ViewFamilyMembers.length > 0"
+        [value]="ViewFamilyMembers"
+        [paginator]="true"
+        [rows]="20"
+        selectionMode="single"
+        [metaKeySelection]="metaKey"
+        (onRowSelect)="onRowSelect($event)"
+        dataKey="id"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        styleClass="p-datatable-striped"
+        [rowsPerPageOptions]="[20, 30, 40]"
+        [globalFilterFields]="['familyNo', 'houseUnitNo', 'subNo', 'householdNo', 'wasama', 'wasamNo', 'officerName']"
+        [scrollable]="true" 
+        scrollHeight="500px">
+
+        <ng-template pTemplate="header">
+            <tr>
+                <th [style.width.%]="12" pSortableColumn="familyNo" style="background-color: #e4e4e4; padding: 10px;">Village No<p-sortIcon field="familyNo" /></th>
+                <th [style.width.%]="12" pSortableColumn="houseUnitNo" style="background-color: #e4e4e4; padding: 10px;">Index No<p-sortIcon field="houseUnitNo" /></th>
+                <th [style.width.%]="12" pSortableColumn="subNo" style="background-color: #e4e4e4; padding: 10px;">Household No<p-sortIcon field="subNo" /></th>
+                <th [style.width.%]="12" pSortableColumn="householdNo" style="background-color: #e4e4e4; padding: 10px;">TF Members<p-sortIcon field="householdNo" /></th>
+                <th [style.width.%]="15" pSortableColumn="wasama" style="background-color: #e4e4e4; padding: 10px;">Wasama<p-sortIcon field="wasama" /></th>
+                <th [style.width.%]="12" pSortableColumn="wasamNo" style="background-color: #e4e4e4; padding: 10px;">Wasam No<p-sortIcon field="wasamNo" /></th>
+                <th [style.width.%]="25" pSortableColumn="officerName" style="background-color: #e4e4e4; padding: 10px;">Officer<p-sortIcon field="officerName" /></th>
+            </tr>
+            <tr>
+                <th>
+                    <p-columnFilter type="text" field="familyNo" placeholder="Search by family no" ariaLabel="Filter Village No" />
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="houseUnitNo" placeholder="Search by Index No" ariaLabel="Filter Index No" />
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="subNo" placeholder="Search by Household No" ariaLabel="Filter Household No" />
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="householdNo" placeholder="Search by Members" ariaLabel="Filter Members" />
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="wasama" placeholder="Search by wasama" ariaLabel="Filter Wasama" />
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="wasamNo" placeholder="Search by wasam no" ariaLabel="Filter Wasam No" />
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="officerName" placeholder="Search by Name" ariaLabel="Filter Officer Name" />
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-customer>
+            <tr [pSelectableRow]="customer">
+                <td [style.width.%]="12" style="white-space: normal; word-wrap: break-word;">{{ customer.familyNo || 'NA' }}</td>
+                <td [style.width.%]="12" style="white-space: normal; word-wrap: break-word;">{{ customer.houseUnitNo || 'NA' }}</td>
+                <td [style.width.%]="12" style="white-space: normal; word-wrap: break-word;">{{ customer.subNo || 'NA' }}</td>
+                <td [style.width.%]="12" style="white-space: normal; word-wrap: break-word;">{{ customer.householdNo || 'NA' }}</td>
+                <td [style.width.%]="15" style="white-space: normal; word-wrap: break-word;">{{ customer.wasama || 'NA' }}</td>
+                <td [style.width.%]="12" style="white-space: normal; word-wrap: break-word;">{{ customer.wasamNo || 'NA' }}</td>
+                <td [style.width.%]="25" style="white-space: normal; word-wrap: break-word;">{{ customer.officerName || 'NA' }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <ngx-spinner bdcolor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="ball-scale-multiple" [fullScreen]="true"><p style="color: white"> Loading... </p></ngx-spinner>
+</p-card>
+
+<p-dialog header="Manage House" [modal]="true" [(visible)]="visible" [style]="{ width: '90rem' }" [maximizable]="true" focusOnShow="false">
+    <div class="row">
+        <div class="col-6">
+            <div class="row">
+                <div class="col-12">
+                    <h5 style="font-weight: bold; color: black;">House Details</h5>
+                </div>
+            </div>
+            <table cellpadding='2' cellspacing='0' style='border-collapse: collapse; width: 100%;'>
+                <tr><td style='width: 35%;'><strong>Village No</strong></td><td>: {{ MembersList.familyNo }}</td></tr>
+                <tr><td style='width: 35%;'><strong>Index No</strong></td><td>: {{ MembersList.houseUnitNo }}</td></tr>
+                <tr><td style='width: 35%;'><strong>House Hold No</strong></td><td>: {{ MembersList.subNo }}</td></tr>
+                <tr><td style='width: 35%;'><strong>Total Family Members</strong></td><td>: {{ MembersList.householdNo }}</td></tr>
+            </table>
+        </div>
+        <div class="col-6">
+            <div class="row">
+                <div class="col-12">
+                    <h5 style="font-weight: bold; color: black;">Wasam Details</h5>
+                </div>
+            </div>
+            <table cellpadding='2' cellspacing='0' style='border-collapse: collapse; width: 100%;'>
+                <tr><td style='width: 35%;'><strong>Wasam Name</strong></td><td>: {{ MembersList.wasama }}</td></tr>
+                <tr><td style='width: 35%;'><strong>Wasam Code</strong></td><td>: {{ MembersList.wasamNo }}</td></tr>
+                <tr><td style='width: 35%;'><strong>Officer Name</strong></td><td>: {{ MembersList.officerName }}</td></tr>
+            </table>
+        </div>
+    </div>
+    <hr *ngIf="MembersList.familyMembers && MembersList.familyMembers.length > 0">
+    <div *ngIf="MembersList.familyMembers && MembersList.familyMembers.length > 0" class="row mt-2">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-12">
+                    <h5 style="font-weight: bold; color: black;">Family Members</h5>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <table class="table custom-table mt-2">
+                    <thead>
+                    <tr>
+                        <th style="width: 5%; text-align: center;">No</th>
+                        <th style="width: 10%;">Full Name</th>
+                        <th style="width: 10%; text-align: center;">NIC</th>
+                        <th style="width: 10%; text-align: center;">Birthday</th>
+                        <th style="width: 10%; text-align: center;">Status</th>
+                        <th style="width: 10%; text-align: center;">Gender</th>
+                        <th style="width: 10%;">Job</th>
+                        <th style="width: 10%; text-align: center;">Mobile</th>
+                        <th style="width: 5%;">Income</th>
+                        <th style="width: 15%;">AIDs</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let member of MembersList.familyMembers; let i = index">
+                        <td style="width: 5%; text-align: center;">{{ i + 1 }}</td>
+                        <td style="width: 10%; word-break: break-all; white-space: normal;">{{ member.fullName || 'N/A' }}</td>
+                        <td style="width: 10%; text-align: center;">{{ member.nic || 'N/A' }}</td>
+                        <td style="width: 10%; text-align: center;">{{ member.birthday ? (member.birthday | date:'yyyy-MM-dd') : 'N/A' }}</td>
+                        <td style="width: 10%; text-align: center;">{{ member.maritalStatus || 'N/A' }}</td>
+                        <td style="width: 10%; text-align: center;">{{ member.gender || 'N/A' }}</td>
+                        <td style="width: 10%; word-break: break-all; white-space: normal;">{{ member.job || 'N/A' }}</td>
+                        <td style="width: 10%; text-align: center;">{{ member.mobile || 'N/A' }}</td>
+                        <td style="width: 5%; word-break: break-all; white-space: normal;">{{ member.income || 'N/A' }}</td>
+                        <td style="width: 15%; word-break: break-all; white-space: normal;">{{ member.aidsList.length ? member.aidsList.join(', ') : 'N/A' }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-12">
+                    <h5 style="font-weight: bold; color: black;">Edit House Details</h5>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <form [formGroup]="HouseForm">
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <p-floatLabel>
+                                        <input pInputText [style]="{'width':'100%'}" id="familyno" name="familyno" formControlName="FamilyNo" [maxlength]="30" />
+                                            <label for="familyno">Village No</label>
+                                    </p-floatLabel>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <p-floatLabel>
+                                        <input pInputText [style]="{'width':'100%'}" id="houseunitno" name="houseunitno" formControlName="HouseUnitNo" [maxlength]="30" />
+                                            <label for="houseunitno">Index No</label>
+                                    </p-floatLabel>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <p-floatLabel>
+                                        <input pInputText [style]="{'width':'100%'}" id="subno" name="subno" formControlName="SubNo" [maxlength]="30" />
+                                            <label for="subno">House Hold No</label>
+                                    </p-floatLabel>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <p-floatLabel>
+                                        <input pInputText [style]="{'width':'100%'}" id="householdno" name="householdno" formControlName="HouseholdNo" [maxlength]="30" />
+                                            <label for="householdno">Total Family Members</label>
+                                    </p-floatLabel>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="mt-4">
+                    <div class="row mt-2">
+                        <div class="d-flex justify-content-between w-100">
+                            <button pButton pRipple icon="pi pi-trash" iconPos="right" severity="danger" (click)="DeleteHouse()"></button>
+                            <button pButton pRipple label="Update" iconPos="right" severity="contrast" (click)="UpdateHouse()" [disabled]="!isStepValid" type="submit"></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</p-dialog>
