@@ -1,0 +1,521 @@
+<p-card [style]="{'margin-bottom':'1rem'}">
+    <p-stepper #stepper>
+        <p-stepperPanel header="STEP 1">
+            <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
+                <form [formGroup]="LeadGenerateForm">
+                    <div class="flex flex-column h-12rem">
+                        <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
+                            
+                            <div class="row">
+                                <div class="col-12">
+                                    <h4 style="font-weight: bold; color: black;">Family Information</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="row mt-4">
+                                        <div class="col-12">
+                                            <p-floatLabel>
+                                                <input pInputText [style]="{'width':'100%'}" id="familynumber" name="familynumber" formControlName="FamilyNumber" [maxlength]="30" (ngModelChange)="isStepsValid()"/>
+                                                <label for="familynumber">Village No</label>
+                                            </p-floatLabel>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="row mt-4">
+                                        <div class="col-12">
+                                            <p-floatLabel>
+                                                <input pInputText [style]="{'width':'100%'}" id="houseunitnumber" name="houseunitnumber" formControlName="HouseUnitNumber" [maxlength]="30" (ngModelChange)="isStepsValid()"/>
+                                                <label for="houseunitnumber">Index No</label>
+                                            </p-floatLabel>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="row mt-4">
+                                        <div class="col-12">
+                                            <p-floatLabel>
+                                                <input pInputText [style]="{'width':'100%'}" id="subnumber" name="subnumber" formControlName="SubNumber" [maxlength]="30" (ngModelChange)="isStepsValid()"/>
+                                                <label for="subnumber">House Hold No</label>
+                                            </p-floatLabel>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="row mt-4">
+                                        <div class="col-12">
+                                            <p-floatLabel>
+                                                <input pInputText [style]="{'width':'100%'}" id="householdno" name="householdno" formControlName="HouseholdNo" [maxlength]="30" (ngModelChange)="isStepsValid()"/>
+                                                <label for="householdno">Total Family Members</label>
+                                            </p-floatLabel>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-2 mt-4">
+                                <div class="d-flex flex-wrap justify-content-between align-items-start gap-2">
+                                    <div class="title-block">
+                                        <h4 style="font-weight: bold; color: black;">Family Members</h4>
+                                    </div>
+                                    <div class="button-block  d-flex gap-2">
+                                        <button pButton pRipple
+                                            label="Member"
+                                            icon="pi pi-plus"
+                                            iconPos="right"
+                                            severity="contrast"
+                                            (click)="addFamilyMember()">
+                                        </button>
+
+                                        <button pButton pRipple
+                                            label="Child"
+                                            icon="pi pi-plus"
+                                            iconPos="right"
+                                            severity="contrast"
+                                            (click)="addChildMember()">
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3 mt-2 justify-content-center align-items-center">
+                                <div  class="row">
+                                    <div class="row">
+                                        <h5 style="font-weight: bold; color: black;">Main Member</h5>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="row mt-4">
+                                                <div class="col-12">
+                                                    <p-floatLabel>
+                                                        <input pInputText [style]="{'width':'100%'}" id="fullname" name="fullname" formControlName="FullName" [maxlength]="100" (ngModelChange)="isStepsValid()"/>
+                                                        <label for="fullname">Full Name *</label>
+                                                    </p-floatLabel>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="row mt-4">
+                                                <div class="col-12">
+                                                    <p-floatLabel>
+                                                        <p-calendar [style]="{'width':'100%'}" id="birthday" name="birthday" formControlName="Birthday" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" (ngModelChange)="isStepsValid()" appendTo="body" />
+                                                        <label for="birthday">Birthday *</label>
+                                                    </p-floatLabel>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="row mt-4">
+                                                <div class="col-12">
+                                                    <p-floatLabel>
+                                                        <p-dropdown [style]="{'width':'100%'}" [options]="GenderList" optionLabel="label" formControlName="selectedGender" placeholder="Select a Gender" (ngModelChange)="isStepsValid()" appendTo="body" />
+                                                        <label for="gender">Select a Gender *</label>
+                                                    </p-floatLabel>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="row mt-4">
+                                                <div class="col-12">
+                                                    <p-floatLabel>
+                                                        <p-dropdown [style]="{'width':'100%'}" [options]="MaritalStatusList" optionLabel="label" formControlName="selectedMaritalStatus" placeholder="Select a Marital Status" (ngModelChange)="isStepsValid()" appendTo="body" />
+                                                        <label for="maritalstatus">Marital Status *</label>
+                                                    </p-floatLabel>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-2 mt-2">
+                                        <div class="col-2">
+                                            <div class="row mt-4">
+                                                <div class="col-12">
+                                                    <p-floatLabel>
+                                                        <input pInputText [style]="{'width':'100%'}" id="nic" name="nic" formControlName="Nic" [maxlength]="12" (ngModelChange)="isStepsValid()"/>
+                                                        <label for="nic">NIC *</label>
+                                                    </p-floatLabel>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="row mt-4">
+                                                <div class="col-12">
+                                                    <p-floatLabel>
+                                                        <input pInputText [style]="{'width':'100%'}" id="job" name="job" formControlName="Job" [maxlength]="100" (ngModelChange)="isStepsValid()"/>
+                                                        <label for="job">Job *</label>
+                                                    </p-floatLabel>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="row mt-4">
+                                                <div class="col-12">
+                                                    <p-floatLabel>
+                                                        <p-inputMask [style]="{'width':'100%'}" id="mobile" name="mobile" mask="999 999-9999" formControlName="Mobile" placeholder="999 999-9999" (ngModelChange)="isStepsValid()"/>
+                                                        <label for="mobile">Mobile *</label>
+                                                    </p-floatLabel>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="row mt-4">
+                                                <div class="col-12">
+                                                    <p-floatLabel>
+                                                        <input pInputText type="text" [style]="{'width':'100%'}" id="income" name="income" formControlName="Income" pattern="[0-9]*" maxlength="16" (ngModelChange)="isStepsValid()"/>
+                                                        <!-- <p-inputNumber [ngStyle]="{'width':'100%'}" [style]="{'width':'100%'}" id="income" name="income" inputId="integeronly" formControlName="Income" [maxlength]="16" (ngModelChange)="isStepsValid()"></p-inputNumber> -->
+                                                        <label for="income">Income *</label>
+                                                    </p-floatLabel>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div formArrayName="FamilyMembers">
+                                <div *ngFor="let member of familyMembers.controls; let i = index" [formGroupName]="i" class="row mb-3 mt-2 justify-content-center align-items-center">
+                                    <div class="col-12 d-flex justify-content-between align-items-center">
+                                        <h5 style="font-weight: bold; color: black;">Family Member {{ i + 1 }}</h5>
+                                        <button pButton pRipple icon="pi pi-trash" iconPos="left" severity="danger" (click)="deleteFamilyMember(i)"></button>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="row mt-4">
+                                                <div class="col-12">
+                                                    <p-floatLabel>
+                                                        <input pInputText [style]="{'width':'100%'}" id="fullname" name="fullname" formControlName="FullName" [maxlength]="100" (ngModelChange)="isStepsValid()"/>
+                                                        <label for="fullname">Full Name *</label>
+                                                    </p-floatLabel>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="row mt-4">
+                                                <div class="col-12">
+                                                    <p-floatLabel>
+                                                        <p-calendar [style]="{'width':'100%'}" id="birthday" name="birthday" formControlName="Birthday" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" (ngModelChange)="isStepsValid()" appendTo="body" />
+                                                        <label for="birthday">Birthday *</label>
+                                                    </p-floatLabel>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="row mt-4">
+                                                <div class="col-12">
+                                                    <p-floatLabel>
+                                                        <p-dropdown [style]="{'width':'100%'}" [options]="GenderList" optionLabel="label" formControlName="selectedGender" placeholder="Select a Gender" (ngModelChange)="isStepsValid()" appendTo="body" />
+                                                        <label for="gender">Select a Gender *</label>
+                                                    </p-floatLabel>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="row mt-4">
+                                                <div class="col-12">
+                                                    <p-floatLabel>
+                                                        <p-dropdown [style]="{'width':'100%'}" [options]="MaritalStatusList" optionLabel="label" formControlName="selectedMaritalStatus" placeholder="Select a Marital Status" (ngModelChange)="isStepsValid()" appendTo="body" />
+                                                        <label for="maritalstatus">Marital Status *</label>
+                                                    </p-floatLabel>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-2 mt-2">
+                                        <div class="col-2">
+                                            <div class="row mt-4">
+                                                <div class="col-12">
+                                                    <p-floatLabel>
+                                                        <input pInputText [style]="{'width':'100%'}" id="nic" name="nic" formControlName="Nic" [maxlength]="12" (ngModelChange)="isStepsValid()"/>
+                                                        <label for="nic">NIC *</label>
+                                                    </p-floatLabel>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="row mt-4">
+                                                <div class="col-12">
+                                                    <p-floatLabel>
+                                                        <input pInputText [style]="{'width':'100%'}" id="job" name="job" formControlName="Job" [maxlength]="100" (ngModelChange)="isStepsValid()"/>
+                                                        <label for="job">Job *</label>
+                                                    </p-floatLabel>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="row mt-4">
+                                                <div class="col-12">
+                                                    <p-floatLabel>
+                                                        <p-inputMask [style]="{'width':'100%'}" id="mobile" name="mobile" mask="999 999-9999" formControlName="Mobile" placeholder="999 999-9999" (ngModelChange)="isStepsValid()"/>
+                                                        <label for="mobile">Mobile</label>
+                                                    </p-floatLabel>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="row mt-4">
+                                                <div class="col-12">
+                                                    <p-floatLabel>
+                                                        <!-- <p-inputNumber [ngStyle]="{'width':'100%'}" [style]="{'width':'100%'}" id="income" name="income" inputId="integeronly" formControlName="Income" [maxlength]="16" (ngModelChange)="isStepsValid()"></p-inputNumber> -->
+                                                        <input pInputText type="text" [style]="{'width':'100%'}" id="income" name="income" formControlName="Income" pattern="[0-9]*" maxlength="16" (ngModelChange)="isStepsValid()"/>
+                                                        <label for="income">Income *</label>
+                                                    </p-floatLabel>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div formArrayName="FamilyChilds">
+                                <div *ngFor="let child of familyChilds.controls; let i = index" [formGroupName]="i" class="row mb-3 mt-2 justify-content-center align-items-center">
+                                    <div class="col-12 d-flex justify-content-between align-items-center">
+                                        <h5 style="font-weight: bold; color: black;">Child {{ i + 1 }}</h5>
+                                        <button pButton pRipple icon="pi pi-trash" iconPos="left" severity="danger" (click)="deleteChildMember(i)"></button>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <div class="row mt-4">
+                                                <div class="col-12">
+                                                    <p-floatLabel>
+                                                        <input pInputText [style]="{'width':'100%'}" id="fullname" name="fullname" formControlName="FullName" [maxlength]="100" (ngModelChange)="isStepsValid()"/>
+                                                        <label for="fullname">Full Name *</label>
+                                                    </p-floatLabel>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="row mt-4">
+                                                <div class="col-12">
+                                                    <p-floatLabel>
+                                                        <input pInputText [style]="{'width':'100%'}" id="nic" name="nic" formControlName="Nic" [maxlength]="12" (ngModelChange)="isStepsValid()"/>
+                                                        <label for="nic">NIC</label>
+                                                    </p-floatLabel>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="row mt-4">
+                                                <div class="col-12">
+                                                    <p-floatLabel>
+                                                        <p-calendar [style]="{'width':'100%'}" id="birthday" name="birthday" formControlName="Birthday" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" (ngModelChange)="isStepsValid()" appendTo="body" />
+                                                        <label for="birthday">Birthday *</label>
+                                                    </p-floatLabel>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="row mt-4">
+                                                <div class="col-12">
+                                                    <p-floatLabel>
+                                                        <p-dropdown [style]="{'width':'100%'}" [options]="GenderList" optionLabel="label" formControlName="selectedGender" placeholder="Select a Gender" (ngModelChange)="isStepsValid()" appendTo="body" />
+                                                        <label for="gender">Select a Gender *</label>
+                                                    </p-floatLabel>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex w-full pt-4 justify-content-end">
+                        <button pButton pRipple
+                            label="Next"
+                            icon="pi pi-arrow-right"
+                            iconPos="right"
+                            severity="contrast"
+                            [disabled]="!isStepValid"
+                            (click)="nextCallback.emit()"
+                            (click)="submit()">
+                        </button>
+                    </div>
+                </form>               
+            </ng-template>
+        </p-stepperPanel>
+        <p-stepperPanel header="STEP 2">
+            <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+                <div class="flex flex-column h-12rem" [ngClass]="{'disabled': !isStepValid}" (click)="isStepValid">
+                    <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
+                        
+                        <div class="row">
+                            <div class="col-12 mb-2">
+                                <h4 style="font-weight: bold; color: black;">Aid Details</h4>
+                                <h6 style="color: rgb(71, 71, 71);">Select applicable aid types for each family member</h6>
+                            </div>
+                        </div>
+
+                        <div class="row" [formGroup]="LeadGenerateForm">
+                            <!-- Main Member Card -->
+                            <div class="col-12 mb-3">
+                                <p-card header="Main Member">
+                                    <p style="white-space: normal; word-wrap: break-word;"><strong>Name :</strong> {{ leadData.FullName }}</p>
+                                    <p style="white-space: normal; word-wrap: break-word;"><strong>NIC :</strong> {{ leadData.Nic }}</p>
+
+                                    <div class="d-flex flex-row gap-5 align-items-center flex-wrap mt-4">
+                                        <p-checkbox label="Special" value="Special" [formControl]="aidSelections"></p-checkbox>
+                                        <p-checkbox label="Kidney" value="Kidney" [formControl]="aidSelections"></p-checkbox>
+                                        <p-checkbox label="Health" value="Health" [formControl]="aidSelections"></p-checkbox>
+                                        <p-checkbox label="Scholarship" value="Scholarship" [formControl]="aidSelections"></p-checkbox>
+                                        <p-checkbox label="Disability" value="Disability" [formControl]="aidSelections"></p-checkbox>
+                                        <p-checkbox label="Aswesuma Rs 15000" value="Aswesuma_1" [formControl]="aidSelections"></p-checkbox>
+                                        <p-checkbox label="Aswesuma Rs 10000" value="Aswesuma_2" [formControl]="aidSelections"></p-checkbox>
+                                        <p-checkbox label="Aswesuma Vulnerable Rs 5000" value="Aswesuma_3" [formControl]="aidSelections"></p-checkbox>
+                                        <p-checkbox label="Aswesuma Transirnt Rs 5000" value="Aswesuma_4" [formControl]="aidSelections"></p-checkbox>
+                                        <p-checkbox label="Aswesuma Appeal" value="Aswesuma_5" [formControl]="aidSelections"></p-checkbox>
+                                        <p-checkbox label="Aswesuma Cycle 2" value="Aswesuma_6" [formControl]="aidSelections"></p-checkbox>
+                                        <p-checkbox label="Elders" value="Elders" [formControl]="aidSelections"></p-checkbox>
+                                        <p-checkbox label="Other" value="Other" [formControl]="aidSelections"></p-checkbox>
+                                    </div>
+
+                                    <div class="row mt-4" *ngIf="aidSelections.value?.includes('Other')">
+                                        <textarea formControlName="OtherAid" pInputTextarea rows="3" placeholder="Other Aid Details"></textarea>
+                                    </div>
+                                </p-card>
+                            </div>
+
+                            <!-- Family Members Cards -->
+                            <div class="col-12">
+                                <div formArrayName="FamilyMembers">
+                                    <div *ngFor="let member of familyMembers.controls; let i = index" [formGroupName]="i" class="mb-3">
+                                        <p-card header="Family Member {{ i + 1 }}">
+                                            <p style="white-space: normal; word-wrap: break-word;"><strong>Name :</strong> {{ member.get('FullName')?.value }}</p>
+                                            <p style="white-space: normal; word-wrap: break-word;"><strong>NIC :</strong> {{ member.get('Nic')?.value }}</p>
+
+                                            <div class="d-flex flex-row gap-5 align-items-center flex-wrap mt-4">
+                                                <p-checkbox label="Special" value="Special" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
+                                                <p-checkbox label="Kidney" value="Kidney" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
+                                                <p-checkbox label="Health" value="Health" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
+                                                <p-checkbox label="Scholarship" value="Scholarship" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
+                                                <p-checkbox label="Disability" value="Disability" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
+                                                <p-checkbox label="Aswesuma Rs 15000" value="Aswesuma_1" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
+                                                <p-checkbox label="Aswesuma Rs 10000" value="Aswesuma_2" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
+                                                <p-checkbox label="Aswesuma Vulnerable Rs 5000" value="Aswesuma_3" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
+                                                <p-checkbox label="Aswesuma Transirnt Rs 5000" value="Aswesuma_4" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
+                                                <p-checkbox label="Aswesuma Appeal" value="Aswesuma_5" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
+                                                <p-checkbox label="Aswesuma Cycle 2" value="Aswesuma_6" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
+                                                <p-checkbox label="Elders" value="Elders" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
+                                                <p-checkbox label="Other Aids" value="Other" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
+                                            </div>
+                                                    
+                                            <div class="row mt-4" *ngIf="getFamilyMemberAidSelections(i).value?.includes('Other')">
+                                                <textarea pInputTextarea rows="3" placeholder="Other Aid Details" [formControl]="getFamilyMemberOtherAid(i)"></textarea>
+                                            </div>
+                                        </p-card>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12">
+                                <div formArrayName="FamilyChilds">
+                                    <div *ngFor="let child of familyChilds.controls; let i = index" [formGroupName]="i" class="mb-3">
+                                        <p-card header="Child {{ i + 1 }}">
+                                            <p style="white-space: normal; word-wrap: break-word;"><strong>Name :</strong> {{ child.get('FullName')?.value }}</p>
+                                            <p style="white-space: normal; word-wrap: break-word;"><strong>NIC :</strong> {{ child.get('Nic')?.value }}</p>
+
+                                            <div class="d-flex flex-row gap-5 align-items-center flex-wrap mt-4">
+                                                <p-checkbox label="Special" value="Special" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
+                                                <p-checkbox label="Kidney" value="Kidney" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
+                                                <p-checkbox label="Health" value="Health" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
+                                                <p-checkbox label="Scholarship" value="Scholarship" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
+                                                <p-checkbox label="Disability" value="Disability" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
+                                                <p-checkbox label="Aswesuma Rs 15000" value="Aswesuma_1" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
+                                                <p-checkbox label="Aswesuma Rs 10000" value="Aswesuma_2" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
+                                                <p-checkbox label="Aswesuma Vulnerable Rs 5000" value="Aswesuma_3" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
+                                                <p-checkbox label="Aswesuma Transirnt Rs 5000" value="Aswesuma_4" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
+                                                <p-checkbox label="Aswesuma Appeal" value="Aswesuma_5" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
+                                                <p-checkbox label="Aswesuma Cycle 2" value="Aswesuma_6" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
+                                                <p-checkbox label="Elders" value="Elders" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
+                                                <p-checkbox label="Other Aids" value="Other" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
+                                            </div>
+
+                                            <div class="row mt-4" *ngIf="getFamilyChildAidSelections(i).value?.includes('Other')">
+                                                <textarea pInputTextarea rows="3" placeholder="Other Aid Details" [formControl]="getFamilyChildOtherAid(i)"></textarea>
+                                            </div>
+                                        </p-card>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex pt-4 justify-content-between">
+                    <button pButton pRipple
+                        label="Back" 
+                        icon="pi pi-arrow-left"
+                        severity="contrast"
+                        (click)="prevCallback.emit()">
+                    </button>
+
+                    <button pButton pRipple
+                        label="Next" 
+                        icon="pi pi-arrow-right" 
+                        iconPos="right" 
+                        severity="contrast"
+                        (click)="nextCallback.emit()"
+                        (click)="submit()">
+                    </button>
+                </div>
+            </ng-template>
+        </p-stepperPanel>
+        <p-stepperPanel header="STEP 3">
+            <ng-template pTemplate="content" let-prevCallback="prevCallback" let-index="index">
+                <div class="flex flex-column h-12rem">
+                    <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
+                        
+                        <div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <h4 style="font-weight: bold; color: black;">Summary</h4>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row mt-2">
+                                <div class="col-12">
+                                    <h5 style="font-weight: bold; color: black;">House Information</h5>
+                                </div>
+                            </div>
+                            <table cellpadding='2' cellspacing='0' style='border-collapse: collapse; width: 100%;'>
+                                <tr><td style='width: 15%;'><strong>Village No</strong></td><td style="white-space: normal; word-wrap: break-word;">: {{ leadData.FamilyNumber || 'NA' }}</td></tr>
+                                <tr><td style='width: 15%;'><strong>Index No</strong></td><td style="white-space: normal; word-wrap: break-word;">: {{ leadData.HouseUnitNumber || 'NA' }}</td></tr>
+                                <tr><td style='width: 15%;'><strong>House Hold No</strong></td><td style="white-space: normal; word-wrap: break-word;">: {{ leadData.SubNumber || 'NA' }}</td></tr>
+                                <tr><td style='width: 15%;'><strong>Total Family Members</strong></td><td style="white-space: normal; word-wrap: break-word;">: {{ leadData.HouseholdNo || 'NA' }}</td></tr>
+                                <tr><td style='width: 15%;'><strong>Householder Name</strong></td><td style="white-space: normal; word-wrap: break-word;">: {{ leadData.FullName.length > 40 ? leadData.FullName.substring(0, 40) + '...' : leadData.FullName || 'NA' }}</td></tr>
+                                <tr><td style='width: 15%;'><strong>Mobile No</strong></td><td style="white-space: normal; word-wrap: break-word;">: {{ leadData.Mobile || 'NA' }}</td></tr>
+                            </table>
+                        </div>
+                        <hr>
+
+                    </div>
+                </div>
+                <div class="d-flex pt-4 justify-content-between">
+                    <button pButton pRipple
+                        label="Back" 
+                        icon="pi pi-arrow-left"
+                        severity="contrast"
+                        (click)="prevCallback.emit()">
+                    </button>
+
+                    <p-toast />
+                    <button pButton pRipple
+                        label="Submit" 
+                        icon="pi pi-check" 
+                        iconPos="right" 
+                        severity="contrast"
+                        [disabled]="!isStepValid"
+                        (click)="SubmitLeadForm()">
+                    </button>
+                </div>
+            </ng-template>
+        </p-stepperPanel>
+    </p-stepper>
+    <ngx-spinner bdcolor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="ball-scale-multiple" [fullScreen]="true"><p style="color: white"> Loading... </p></ngx-spinner>
+</p-card>

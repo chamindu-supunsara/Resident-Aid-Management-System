@@ -1,0 +1,12 @@
+::ng-deep .p-confirm-dialog .p-confirm-dialog-footer {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+::ng-deep .p-confirm-dialog .p-button {
+    margin: 0 2rem;
+    font-size: 1rem;
+    min-width: 6rem;
+    text-align: center;
+}

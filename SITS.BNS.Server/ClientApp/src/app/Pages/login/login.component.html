@@ -1,0 +1,187 @@
+<p-toast />
+<div class="login-container">
+    <div class="left-side">
+      <img src="cover.png" alt="Left Side Image">
+    </div>
+  
+    <div class="right-side">
+        <div class="row">
+            <h6 class="text-center" style="margin-top: 0.5rem; font-weight: bold;">Welcome to</h6>
+            <h5 class="text-center" style="font-weight: bold;">KEKIRAWA DIVISION</h5>
+        </div>
+        <div class="login-form">
+            <div class="row">
+                <h1 class="text-center" style="font-weight: bold;">GRAMA LINK</h1>
+            </div>
+            <p-tabView (onChange)="OnTabChange($event)">
+                <p-tabPanel header="LOGIN">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row mt-1">
+                                <div class="col-12">
+                                    <p-floatLabel>
+                                        <input pInputText [style]="{'width':'100%'}" id="login-username" [(ngModel)]="UserEmail" autocomplete="username" [maxlength]="100"/>
+                                        <label for="username">Email</label>
+                                    </p-floatLabel>
+                                </div>
+                            </div>
+                            <div class="row mt-4 mb-2">
+                                <div class="col-12">
+                                    <p-floatLabel>
+                                        <p-password [feedback]="false" class="w-full" styleClass="p-password p-component p-inputwrapper p-input-icon-right" [style]="{'width':'100%'}"
+                                        [(ngModel)]="UserPassword" [inputStyle]="{'width':'100%'}" autocomplete="current-password" [toggleMask]="true"/>
+                                        <label for="password">Password</label>
+                                    </p-floatLabel>
+                                </div>
+                            </div>
+                            <small id="username-help" style="font-weight: bold;">
+                                Forgot Password? <a (click)="showDialog()" style="cursor: pointer;">Click Here</a>
+                            </small>
+                            <div class="row mt-4">
+                                <div class="col-12 d-flex justify-content-center">
+                                    <div class="w-100">
+                                        <button pButton pRipple 
+                                                label="Sign In" 
+                                                (click)="InAppLogin()" 
+                                                severity="contrast" 
+                                                class="w-100">
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="row mt-2">
+                                <div class="col-12 d-flex justify-content-center">
+                                    <div class="w-100">
+                                        <button pButton pRipple 
+                                                icon="pi pi-microsoft" 
+                                                label="Sign In with O365" 
+                                                (click)="O365Login()" 
+                                                severity="danger" 
+                                                class="w-100">
+                                        </button>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </p-tabPanel>
+                <p-tabPanel header="REGISTER">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row">
+                                <form [formGroup]="RegisterForm">
+                                    <div class="row mt-1">
+                                        <div class="col-12">
+                                            <p-floatLabel>
+                                                <p-dropdown [style]="{'width':'100%'}" [options]="Companies" optionLabel="locationCode" formControlName="selectedCompany" placeholder="Select a Area" appendTo="body" />
+                                                <label for="float-label">Select a Area</label>
+                                            </p-floatLabel>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-4">
+                                        <div class="col-12">
+                                            <p-floatLabel>
+                                                <input pInputText [style]="{'width':'100%'}" id="firstname" name="firstname" formControlName="Firstname" [maxlength]="100" id="firstname"/>
+                                                <label for="firstname">First Name</label>
+                                            </p-floatLabel>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-4">
+                                        <div class="col-12">
+                                            <p-floatLabel>
+                                                <input pInputText [style]="{'width':'100%'}" id="lastname" name="lastname" formControlName="Lastname" [maxlength]="100" id="lastname"/>
+                                                <label for="lastname">Last Name</label>
+                                            </p-floatLabel>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-4">
+                                        <div class="col-12">
+                                            <p-floatLabel>
+                                                <p-inputMask [style]="{'width':'100%'}" id="mobile" name="mobile" mask="999 999-9999" formControlName="Mobile" placeholder="999 999-9999"/>
+                                                <label for="mobile">Mobile Number</label>
+                                            </p-floatLabel>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-4">
+                                        <div class="col-12">
+                                            <p-floatLabel>
+                                                <input pInputText [style]="{'width':'100%'}" id="signup-email" autocomplete="email" name="email" formControlName="Email" [maxlength]="100"/>
+                                                <label for="email">Email</label>
+                                            </p-floatLabel>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-4 mb-2">
+                                        <div class="col-12">
+                                            <p-floatLabel>
+                                                <p-password [feedback]="true" class="w-full" styleClass="p-password p-component p-inputwrapper p-input-icon-right" [style]="{'width':'100%'}"
+                                                formControlName="Password" [inputStyle]="{'width':'100%'}" autocomplete="new-password" [maxlength]="30" [toggleMask]="true"/>
+                                                <label for="password">Password</label>
+                                            </p-floatLabel>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-12 d-flex justify-content-center">
+                                    <div class="w-100">
+                                        <button pButton pRipple 
+                                            label="Sign Up" 
+                                            (click)="InAppSignUp()" 
+                                            [disabled]="!isValid" 
+                                            severity="contrast" 
+                                            class="w-100">
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </p-tabPanel>
+            </p-tabView>
+        </div>
+        <div class="text-center mt-2">
+            <span>Powered by RAD INNOVATORS</span>
+        </div>
+    </div>
+    <ngx-spinner bdcolor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="ball-scale-multiple" [fullScreen]="true"><p style="color: white"> Loading... </p></ngx-spinner>
+</div>  
+
+<p-dialog header="Forgot Password" [modal]="true" [(visible)]="visible" [style]="{ width: '30rem' }" focusOnShow="false">
+    <div class="row">
+        <div class="col-12">
+            <form [formGroup]="ResetForm">
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <p-floatLabel>
+                            <input pInputText [style]="{'width':'100%'}" id="reset-email" autocomplete="email" formControlName="UserName" appendTo="body" [maxlength]="100"/>
+                            <label for="rtusername">Email</label>
+                        </p-floatLabel>
+                    </div>
+                </div>
+                <div class="row mt-4 mb-2">
+                    <div class="col-12">
+                        <p-floatLabel>
+                            <p-password [feedback]="false" class="w-full" styleClass="p-password p-component p-inputwrapper p-input-icon-right" [style]="{'width':'100%'}"
+                            [inputStyle]="{'width':'100%'}" formControlName="NPassword" autocomplete="reset-password" appendTo="body" [maxlength]="30" [toggleMask]="true"/>
+                            <label for="password">New Password</label>
+                        </p-floatLabel>
+                    </div>
+                </div>
+                <div class="row mt-4 mb-2">
+                    <div class="col-12">
+                        <p-floatLabel>
+                            <p-password [feedback]="false" class="w-full" styleClass="p-password p-component p-inputwrapper p-input-icon-right" [style]="{'width':'100%'}"
+                            [inputStyle]="{'width':'100%'}" formControlName="CMPassword" appendTo="body" [maxlength]="30" [toggleMask]="true"/>
+                            <label for="password">Confirm Password</label>
+                        </p-floatLabel>
+                    </div>
+                </div>
+            </form>
+            <div class="row mt-4">
+                <div class="col-12 d-flex justify-content-center">
+                    <button pButton pRipple label="Reset" (click)="ForgetPassword()" [disabled]="!isRPValid" severity="contrast"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</p-dialog>

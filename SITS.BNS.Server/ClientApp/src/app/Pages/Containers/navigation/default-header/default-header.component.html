@@ -1,0 +1,26 @@
+<!--<c-header class="mb-4 d-print-none" position="sticky">-->
+  <ng-container>
+    <c-container [fluid]="true">
+      <button
+        (click)="toggleSidebar()"
+        class="btn"
+        toggle="visible"
+        style="margin-inline-start: -14px;"
+        aria-label="Toggle sidebar navigation"
+      >
+        <svg cIcon name="cilMenu" size="lg"></svg>
+      </button>
+
+      <!-- <c-breadcrumb-router style="margin-left: 1rem;"/> -->
+
+      <c-header-nav class="d-md-flex ms-auto ">
+        <p cDropdownHeader class="headertext text-bold py-2 mt-1" style="margin-right: 2rem;"><b>Hi {{Username}}</b></p>
+        <p-toast />
+        <p-confirmDialog />
+        <a cNavLink (click)="confirm($event)">
+          <svg cIcon class="my-1" name="cilPowerStandby" size="lg"></svg>
+        </a>
+      </c-header-nav>
+    </c-container>
+  </ng-container>
+  <!--</c-header>-->

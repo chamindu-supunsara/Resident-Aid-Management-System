@@ -1,0 +1,71 @@
+// Core CSS files for PrimeNG and CoreUI
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+// Define responsive breakpoints
+$breakpoint-xs: 480px;   // Extra small devices (phones)
+$breakpoint-sm: 768px;   // Small devices (tablets)
+$breakpoint-md: 1024px;  // Medium devices (desktops)
+$breakpoint-lg: 1200px;  // Large devices (larger desktops)
+
+// Mixin for responsive media queries
+@mixin respond-to($breakpoint) {
+    @if $breakpoint == xs {
+        @media (max-width: $breakpoint-xs) { @content; }
+    }
+    @else if $breakpoint == sm {
+        @media (max-width: $breakpoint-sm) { @content; }
+    }
+    @else if $breakpoint == md {
+        @media (max-width: $breakpoint-md) { @content; }
+    }
+    @else if $breakpoint == lg {
+        @media (max-width: $breakpoint-lg) { @content; }
+    }
+}
+
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+// Base HTML settings
+html {
+    font-size: 12px;
+    font-family: 'Poppins', sans-serif !important;
+
+    @include respond-to(xs) {
+        font-size: 10px; // Smaller font for mobile
+    }
+
+    @include respond-to(md) {
+        font-size: 14px; // Larger font for tablets
+    }
+}
+
+// Custom buttons with mobile adjustments
+.custom-accept-btn, .custom-reject-btn {
+    margin: 0 10px;
+}
+
+// Import custom variables if needed
+@import "variables";
+
+// Import CoreUI default layout styles
+@import "@coreui/coreui/scss/coreui";
+
+// Import Chart.js styles (uncomment if needed)
+// @import "@coreui/chartjs/scss/coreui-chartjs";
+
+// Import custom theme styles
+@import "theme";
+
+// Temporary fixes if needed (optional)
+// @import "fixes";
+
+// Additional custom styles for the application
+@import "custom";
+
+// Optional examples for code usage (remove in production)
+@import "examples";

@@ -1,0 +1,70 @@
+<p-card [style]="{'margin-bottom':'1rem'}">
+    <div class="row">
+        <div class="col-4">
+            <div class="row" *ngIf="UserRole === 'LGS Admin'">
+                <div class="col-12">
+                    <p-floatLabel>
+                        <p-dropdown [style]="{'width':'100%'}" [options]="Companies" optionLabel="name" [ngModelOptions]="{standalone: true}" (onChange)="SelectCompany()" [(ngModel)]="selectCompany" placeholder="Select a Company" appendTo="body" />
+                        <label for="float-label">Select an Organization</label>
+                    </p-floatLabel>
+                </div>
+            </div>
+            <div class="row mt-4" *ngIf="selectCompany != null">
+                <p-orderList 
+                    [value]="locations"
+                    [responsive]="true"
+                    [listStyle]="{ height: '20rem' }"
+                    filterBy="name"
+                    (onSelectionChange)="onReorder($event)"
+                    [metaKeySelection]="true"
+                    controlsPosition="right"
+                    filterPlaceholder="Filter by name"
+                    header="Branch List">
+                    <ng-template let-product pTemplate="item">
+                        <div class="flex flex-wrap p-2 align-items-center">
+                            <div class="flex-1">
+                                <h4 class="font-bold">{{ product.name }}</h4>
+                                <span class="font-bold">{{ product.mobile }}</span>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-orderList>
+            </div>
+            <div class="row" *ngIf="UserRole != 'LGS Admin'">
+                <p-orderList 
+                    [value]="locations"
+                    [responsive]="true"
+                    [listStyle]="{ height: '30rem' }"
+                    filterBy="name"
+                    (onSelectionChange)="onReorder($event)"
+                    [metaKeySelection]="true"
+                    controlsPosition="right"
+                    filterPlaceholder="Filter by name"
+                    header="Branch List">
+                    <ng-template let-product pTemplate="item">
+                        <div class="flex flex-wrap p-2 align-items-center">
+                            <div class="flex-1">
+                                <h4 class="font-bold">{{ product.name }}</h4>
+                                <span class="font-bold">{{ product.mobile }}</span>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-orderList>
+            </div>
+        </div>
+        <div class="col-8">
+            <google-map
+                mapId="b43c52b3f850cdff"
+                height="70vh"
+                width="auto"
+                [center]="center()"
+                [zoom]="zoom()">
+                <map-advanced-marker 
+                    *ngFor="let location of locations" 
+                    [position]="{ lat: location.latitude, lng: location.longitude }">
+                </map-advanced-marker>
+            </google-map>
+        </div>
+    </div>
+    <ngx-spinner bdcolor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="ball-scale-multiple" [fullScreen]="true"><p style="color: white"> Loading... </p></ngx-spinner>
+</p-card>

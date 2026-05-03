@@ -1,0 +1,82 @@
+:host ::ng-deep .p-tabview-nav {
+    display: flex;
+    justify-content: center;
+}
+  
+:host ::ng-deep .p-tabview-nav-link {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    text-align: center;
+}
+
+.login-container {
+    display: flex;
+    height: 100vh;
+}
+
+.left-side {
+    flex: 3;
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+  
+.left-side img {
+    max-width: 100%;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    overflow: hidden;
+    background-position: center;
+    background-size: cover;
+}
+  
+.right-side {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffffff;
+}
+
+.login-form {
+    width: 100%;
+    max-width: 400px;
+    padding: 2rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.text-center.mt-2 {
+    margin-top: auto;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 1366px) {
+    
+}
+
+@media (max-width: 1200px) {
+    .right-side {
+        flex: 3;
+    }
+}
+   
+@media (max-width: 600px) {
+    .login-container {
+      flex-direction: column;
+    }
+  
+    .left-side {
+      height: 40vh;
+      display: none;
+    }
+  
+    .right-side {
+      height: 60vh;
+    }
+}
