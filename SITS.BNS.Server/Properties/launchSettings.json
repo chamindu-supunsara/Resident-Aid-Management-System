@@ -9,7 +9,7 @@
       }
     },
     "profiles": {
-      "SITS.BNS": {
+      "Project AID": {
         "commandName": "Project",
         "launchBrowser": true,
         "applicationUrl": "https://localhost:7002;http://localhost:5244",

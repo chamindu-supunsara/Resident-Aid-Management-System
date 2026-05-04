@@ -1,6 +1,6 @@
 export const environment = {
   production:false,
-  rooturl:"https://localhost:7002",
-  //rooturl: "",
+  //rooturl:"https://localhost:7002",
+  rooturl: "",
 };
 
