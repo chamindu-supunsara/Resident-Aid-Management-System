@@ -109,7 +109,7 @@ jobs:
             latest
 
       # Build image (no push yet)
-      - name: Build Docker image
+      - name: Build and Push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -126,14 +126,6 @@ jobs:
           ignore-unfixed: true
           vuln-type: os,library
           severity: CRITICAL,HIGH
-
-      # Push image
-      - name: Push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
 
       # Output tag
       - name: Set image tag
