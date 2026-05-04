@@ -1,0 +1,212 @@
+<p-card [style]="{'margin-bottom':'1rem'}" header="Officers">
+    <p-toast />
+
+    <div *ngIf="ViewOfficers.length === 0" style="text-align: center; padding: 1rem;">
+        <div class="row">
+            <p-skeleton height="21rem" />
+        </div>
+    </div>
+
+    <p-table
+        *ngIf="ViewOfficers.length > 0"
+        [value]="ViewOfficers"
+        [paginator]="true"
+        [rows]="20"
+        selectionMode="single"
+        [metaKeySelection]="metaKey"
+        (onRowSelect)="onRowSelect($event)"
+        dataKey="id"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        styleClass="p-datatable-striped"
+        [rowsPerPageOptions]="[20, 30, 40]"
+        [globalFilterFields]="['firstname', 'lastname', 'userEmail', 'wasamName', 'mobile', 'status']"
+        [scrollable]="true" 
+        scrollHeight="500px">
+
+        <ng-template pTemplate="header">
+            <tr>
+                <th [style.width.%]="20" pSortableColumn="firstname" style="background-color: #e4e4e4; padding: 10px;">First Name<p-sortIcon field="firstname" /></th>
+                <th [style.width.%]="20" pSortableColumn="lastname" style="background-color: #e4e4e4; padding: 10px;">Last Name<p-sortIcon field="lastname" /></th>
+                <th [style.width.%]="20" pSortableColumn="userEmail" style="background-color: #e4e4e4; padding: 10px;">Email<p-sortIcon field="userEmail" /></th>
+                <th [style.width.%]="15" pSortableColumn="wasamName" style="background-color: #e4e4e4; padding: 10px;">Wasam<p-sortIcon field="wasamName" /></th>
+                <th [style.width.%]="15" pSortableColumn="status" style="background-color: #e4e4e4; padding: 10px; align-items: center; text-align: center;">Active<p-sortIcon field="status" /></th>
+                <th [style.width.%]="10" pSortableColumn="mobile" style="background-color: #e4e4e4; padding: 10px;">Mobile<p-sortIcon field="mobile" /></th>
+            </tr>
+            <tr>
+                <th>
+                    <p-columnFilter type="text" field="firstname" placeholder="Search by name" ariaLabel="Filter Name" />
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="lastname" placeholder="Search by name" ariaLabel="Filter Name" />
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="userEmail" placeholder="Search by email" ariaLabel="Filter Email" />
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="wasamName" placeholder="Search by wasam" ariaLabel="Filter Wasam" />
+                </th>
+                <th>
+                    
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="mobile" placeholder="Search by mobile" ariaLabel="Filter Mobile" />
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-customer>
+            <tr [pSelectableRow]="customer">
+                <td [style.width.%]="20" style="white-space: normal; word-wrap: break-word;">{{ customer.firstname || 'NA' }}</td>
+                <td [style.width.%]="20" style="white-space: normal; word-wrap: break-word;">{{ customer.lastname || 'NA' }}</td>
+                <td [style.width.%]="20" style="white-space: normal; word-wrap: break-word;">{{ customer.userEmail || 'NA' }}</td>
+                <td [style.width.%]="15" style="white-space: normal; word-wrap: break-word;">{{ customer.wasamName || 'NA' }}</td>
+                <td [style.width.%]="15" style="align-items: center; text-align: center;">
+                    <ng-container *ngIf="customer.status !== null && customer.status !== undefined; else noRoles">
+                        <p-tag 
+                            [value]="customer.status === true ? 'Yes' : 'No'" 
+                            [rounded]="true" 
+                            [severity]="getSeverity(customer.status)" 
+                            [style]="{ 
+                                'margin-right': '3px', 
+                                'margin-top': '2px', 
+                                'font-size': '10px', 
+                                'padding': '1px 5px', 
+                                'height': '16px', 
+                                'line-height': '12px'
+                            }">
+                        </p-tag>
+                    </ng-container>
+                    <ng-template #noRoles>
+                        <span>N/A</span>
+                    </ng-template>
+                </td>
+                <td [style.width.%]="10" style="white-space: normal; word-wrap: break-word;">{{ customer.mobile || 'NA' }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+    <ngx-spinner bdcolor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="ball-scale-multiple" [fullScreen]="true"><p style="color: white"> Loading... </p></ngx-spinner>
+</p-card>
+
+<p-dialog header="Manage Officers" [modal]="true" [(visible)]="visible" [style]="{ width: '60rem' }" focusOnShow="false">
+    <div class="row">
+        <div class="col-6">
+            <div class="row">
+                <div class="col-12">
+                    <h5 style="font-weight: bold; color: black;">Officer Information</h5>
+                </div>
+            </div>
+            <table cellpadding='2' cellspacing='0' style='border-collapse: collapse; width: 100%;'>
+                <tr><td style='width: 35%;'><strong>First Name</strong></td><td>: {{ ViewLeadsData.firstname }}</td></tr>
+                <tr><td style='width: 35%;'><strong>Last Name</strong></td><td>: {{ ViewLeadsData.lastname }}</td></tr>
+                <tr><td style='width: 35%;'><strong>Email</strong></td><td>: {{ ViewLeadsData.userEmail }}</td></tr>
+            </table>
+        </div>
+        <div class="col-6">
+            <div class="row">
+                <div class="col-12">
+                    <h5 style="font-weight: bold; color: black;">Wasam Information</h5>
+                </div>
+            </div>
+            <table cellpadding='2' cellspacing='0' style='border-collapse: collapse; width: 100%;'>
+                <tr><td style='width: 35%;'><strong>Wasam Name</strong></td><td>: {{ ViewLeadsData.wasamName }}</td></tr>
+                <tr><td style='width: 35%;'><strong>Mobile Number</strong></td><td>: {{ ViewLeadsData.mobile }}</td></tr>
+                <tr><td style='width: 35%;'><strong>Active Status</strong></td><td>: <p-tag 
+                            [value]="ViewLeadsData.status === true ? 'Yes' : 'No'" 
+                            [rounded]="true" 
+                            [severity]="getSeverity(ViewLeadsData.status)" 
+                            [style]="{ 
+                                'margin-right': '3px', 
+                                'margin-top': '2px', 
+                                'font-size': '10px', 
+                                'padding': '1px 5px', 
+                                'height': '16px', 
+                                'line-height': '12px'
+                            }">
+                        </p-tag>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <hr>
+    <form [formGroup]="OfficersForm">
+        <div class="row">
+            <div class="col-4">
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <p-floatLabel>
+                            <input pInputText [style]="{'width':'100%'}" id="firstname" name="firstname" formControlName="Firstname" [maxlength]="100" />
+                                <label for="firstname">Fisrt Name *</label>
+                        </p-floatLabel>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <p-floatLabel>
+                            <input pInputText [style]="{'width':'100%'}" id="lastname" name="lastname" formControlName="Lastname" [maxlength]="100" />
+                                <label for="lastname">Last Name *</label>
+                        </p-floatLabel>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <p-floatLabel>
+                            <p-inputMask [style]="{'width':'100%'}" id="mobile" name="mobile" mask="999 999-9999" formControlName="Mobile" placeholder="999 999-9999" />
+                                <label for="mobile">Mobile *</label>
+                        </p-floatLabel>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-2 mt-2">
+            <div class="col-4">
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <p-floatLabel>
+                            <input pInputText [style]="{'width':'100%'}" id="Wasamname" name="Wasamname" formControlName="WasamName" [maxlength]="30" />
+                                <label for="Wasamname">Wasam Name *</label>
+                        </p-floatLabel>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <p-floatLabel>
+                            <input pInputText [style]="{'width':'100%'}" id="useremail" name="useremail" formControlName="UserEmail" [maxlength]="100" />
+                                <label for="useremail">User Email *</label>
+                        </p-floatLabel>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <p-floatLabel>
+                            <p-dropdown [style]="{'width':'100%'}" [options]="StatusList" optionLabel="label" optionValue="value" formControlName="selectedStatus" placeholder="Select a Status" appendTo="body" />
+                                <label for="selectedstatus">Select a Status *</label>
+                        </p-floatLabel>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="d-flex justify-content-between w-100">
+                <button pButton pRipple icon="pi pi-trash" iconPos="right" severity="danger" 
+                        [disabled]="!isStepValid" (click)="Delete()">
+                </button>
+
+                <button pButton pRipple label="Save" iconPos="right" severity="contrast" 
+                        [disabled]="!isStepValid" type="submit" (click)="Save()">
+                </button>
+            </div>
+        </div>
+    </form>
+    
+</p-dialog>
