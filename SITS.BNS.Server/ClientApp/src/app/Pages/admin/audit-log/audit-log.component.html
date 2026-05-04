@@ -1,0 +1,58 @@
+<p-card [style]="{'margin-bottom':'1rem'}" header="Audit Logs">
+    <p-toast />
+
+    <div *ngIf="AuditsLogs.length === 0" style="text-align: center; padding: 1rem;">
+        <div class="row">
+            <p-skeleton height="21rem" />
+        </div>
+    </div>
+
+    <p-table
+        *ngIf="AuditsLogs.length > 0"
+        [value]="AuditsLogs"
+        [paginator]="true"
+        [rows]="20"
+        selectionMode="single"
+        [metaKeySelection]="metaKey"
+        dataKey="id"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        styleClass="p-datatable-striped"
+        [rowsPerPageOptions]="[20, 30, 40]"
+        [globalFilterFields]="['category', 'action', 'editedBy', 'createdDate']"
+        [scrollable]="true" 
+        scrollHeight="500px">
+
+        <ng-template pTemplate="header">
+            <tr>
+                <th [style.width.%]="20" pSortableColumn="category" style="background-color: #e4e4e4; padding: 10px;">Category<p-sortIcon field="category" /></th>
+                <th [style.width.%]="40" pSortableColumn="action" style="background-color: #e4e4e4; padding: 10px;">Action<p-sortIcon field="action" /></th>
+                <th [style.width.%]="20" pSortableColumn="editedBy" style="background-color: #e4e4e4; padding: 10px;">Created By<p-sortIcon field="editBy" /></th>
+                <th [style.width.%]="20" pSortableColumn="createdDate" style="background-color: #e4e4e4; padding: 10px;">Date & Time<p-sortIcon field="createdDate" /></th>
+            </tr>
+            <tr>
+                <th>
+                    <p-columnFilter type="text" field="category" placeholder="Search by category" ariaLabel="Filter Category" />
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="action" placeholder="Search by action" ariaLabel="Filter Action" />
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="editedBy" placeholder="Search by created by" ariaLabel="Filter Created By" />
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="createdDate" placeholder="Search by date" ariaLabel="Filter Date" />
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-customer>
+            <tr [pSelectableRow]="customer">
+                <td [style.width.%]="20" style="white-space: normal; word-wrap: break-word;">{{ customer.category || 'NA' }}</td>
+                <td [style.width.%]="40" style="white-space: normal; word-wrap: break-word;">{{ customer.action || 'NA' }}</td>
+                <td [style.width.%]="20" style="white-space: normal; word-wrap: break-word;">{{ customer.editedBy || 'NA' }}</td>
+                <td [style.width.%]="20" style="white-space: normal; word-wrap: break-word;">{{ customer.createdDate ? (customer.createdDate | date: 'yyyy-MM-dd hh:mm a') : 'NA' }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+    <ngx-spinner bdcolor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="ball-scale-multiple" [fullScreen]="true"><p style="color: white"> Loading... </p></ngx-spinner>
+</p-card>
