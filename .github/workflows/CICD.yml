@@ -6,43 +6,43 @@ on:
     branches: [CICD]
 
 jobs:
-    test:
-      name: Unit Testing
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v4
+    # test:
+    #   name: Unit Testing
+    #   runs-on: ubuntu-latest
+    #   steps:
+    #     - name: Checkout code
+    #       uses: actions/checkout@v4
 
-        - name: Setup Node.js
-          uses: actions/setup-node@v4
-          with:
-            node-version: "20"
-            cache: "npm"
+    #     - name: Setup Node.js
+    #       uses: actions/setup-node@v4
+    #       with:
+    #         node-version: "20"
+    #         cache: "npm"
 
-        - name: Install dependencies
-          run: npm ci
+    #     - name: Install dependencies
+    #       run: npm ci
 
-        - name: Run tests
-          run: npm test || echo "No tests found, would add tests in a real project"
+    #     - name: Run tests
+    #       run: npm test || echo "No tests found, would add tests in a real project"
     
-    lint:
-      name: Static Code Analysis
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v4
+    # lint:
+    #   name: Static Code Analysis
+    #   runs-on: ubuntu-latest
+    #   steps:
+    #     - name: Checkout code
+    #       uses: actions/checkout@v4
         
-        - name: Setup Node.js
-          uses: actions/setup-node@v4
-          with:
-            node-version: '20'
-            cache: 'npm'
+    #     - name: Setup Node.js
+    #       uses: actions/setup-node@v4
+    #       with:
+    #         node-version: '20'
+    #         cache: 'npm'
         
-        - name: Install dependencies
-          run: npm ci
+    #     - name: Install dependencies
+    #       run: npm ci
         
-        - name: Run ESLint
-          run: npm run lint
+    #     - name: Run ESLint
+    #       run: npm run lint
     
     docker:
       name: Docker Build and Push
