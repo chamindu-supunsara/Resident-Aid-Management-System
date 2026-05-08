@@ -3,8 +3,6 @@ name: CI/CD — Resident Aid Management System
 on:
   push:
     branches: [ CICD_Main ]
-  pull_request:
-    branches: [ CICD_Main ]
 
 env:
   DOTNET_VERSION: '8.0.x'
