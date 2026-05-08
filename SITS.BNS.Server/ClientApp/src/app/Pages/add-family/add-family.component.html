@@ -12,7 +12,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-3">
+                                <!-- <div class="col-3">
                                     <div class="row mt-4">
                                         <div class="col-12">
                                             <p-floatLabel>
@@ -21,13 +21,13 @@
                                             </p-floatLabel>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="col-3">
                                     <div class="row mt-4">
                                         <div class="col-12">
                                             <p-floatLabel>
                                                 <input pInputText [style]="{'width':'100%'}" id="houseunitnumber" name="houseunitnumber" formControlName="HouseUnitNumber" [maxlength]="30" (ngModelChange)="isStepsValid()"/>
-                                                <label for="houseunitnumber">Index No</label>
+                                                <label for="houseunitnumber">House Hold No</label>
                                             </p-floatLabel>
                                         </div>
                                     </div>
@@ -37,12 +37,12 @@
                                         <div class="col-12">
                                             <p-floatLabel>
                                                 <input pInputText [style]="{'width':'100%'}" id="subnumber" name="subnumber" formControlName="SubNumber" [maxlength]="30" (ngModelChange)="isStepsValid()"/>
-                                                <label for="subnumber">House Hold No</label>
+                                                <label for="subnumber">Sub No</label>
                                             </p-floatLabel>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-3">
+                                <!-- <div class="col-3">
                                     <div class="row mt-4">
                                         <div class="col-12">
                                             <p-floatLabel>
@@ -51,7 +51,7 @@
                                             </p-floatLabel>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
 
                             <div class="row mb-2 mt-4">
@@ -359,20 +359,44 @@
                                     <p style="white-space: normal; word-wrap: break-word;"><strong>Name :</strong> {{ leadData.FullName }}</p>
                                     <p style="white-space: normal; word-wrap: break-word;"><strong>NIC :</strong> {{ leadData.Nic }}</p>
 
-                                    <div class="d-flex flex-row gap-5 align-items-center flex-wrap mt-4">
-                                        <p-checkbox label="Special" value="Special" [formControl]="aidSelections"></p-checkbox>
-                                        <p-checkbox label="Kidney" value="Kidney" [formControl]="aidSelections"></p-checkbox>
-                                        <p-checkbox label="Health" value="Health" [formControl]="aidSelections"></p-checkbox>
-                                        <p-checkbox label="Scholarship" value="Scholarship" [formControl]="aidSelections"></p-checkbox>
-                                        <p-checkbox label="Disability" value="Disability" [formControl]="aidSelections"></p-checkbox>
-                                        <p-checkbox label="Aswesuma Rs 15000" value="Aswesuma_1" [formControl]="aidSelections"></p-checkbox>
-                                        <p-checkbox label="Aswesuma Rs 10000" value="Aswesuma_2" [formControl]="aidSelections"></p-checkbox>
-                                        <p-checkbox label="Aswesuma Vulnerable Rs 5000" value="Aswesuma_3" [formControl]="aidSelections"></p-checkbox>
-                                        <p-checkbox label="Aswesuma Transirnt Rs 5000" value="Aswesuma_4" [formControl]="aidSelections"></p-checkbox>
-                                        <p-checkbox label="Aswesuma Appeal" value="Aswesuma_5" [formControl]="aidSelections"></p-checkbox>
-                                        <p-checkbox label="Aswesuma Cycle 2" value="Aswesuma_6" [formControl]="aidSelections"></p-checkbox>
-                                        <p-checkbox label="Elders" value="Elders" [formControl]="aidSelections"></p-checkbox>
-                                        <p-checkbox label="Other" value="Other" [formControl]="aidSelections"></p-checkbox>
+                                    <div class="d-flex flex-column gap-4 mt-4">
+                                        <div>
+                                            <h6 class="fw-bold text-primary mb-4">Medical & Health Support</h6>
+
+                                            <div class="d-flex flex-row gap-5 align-items-center flex-wrap">
+                                                <p-checkbox label="Kidney" value="Kidney" [formControl]="aidSelections"></p-checkbox>
+                                                <p-checkbox label="Health" value="Health" [formControl]="aidSelections"></p-checkbox>
+                                                <p-checkbox label="Disability" value="Disability" [formControl]="aidSelections"></p-checkbox>
+                                                <p-checkbox label="Elders" value="Elders" [formControl]="aidSelections"></p-checkbox>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h6 class="fw-bold text-success mb-4">Education Support</h6>
+
+                                            <div class="d-flex flex-row gap-5 align-items-center flex-wrap">
+                                                <p-checkbox label="Scholarship" value="Scholarship" [formControl]="aidSelections"></p-checkbox>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h6 class="fw-bold text-warning mb-4">Welfare & Financial Aid</h6>
+
+                                            <div class="d-flex flex-row gap-5 align-items-center flex-wrap">
+                                                <p-checkbox label="Aswesuma Rs 15000" value="Aswesuma_1" [formControl]="aidSelections"></p-checkbox>
+                                                <p-checkbox label="Aswesuma Rs 10000" value="Aswesuma_2" [formControl]="aidSelections"></p-checkbox>
+                                                <p-checkbox label="Aswesuma Vulnerable Rs 5000" value="Aswesuma_3" [formControl]="aidSelections"></p-checkbox>
+                                                <p-checkbox label="Aswesuma Transient Rs 5000" value="Aswesuma_4" [formControl]="aidSelections"></p-checkbox>
+                                                <p-checkbox label="Aswesuma Appeal" value="Aswesuma_5" [formControl]="aidSelections"></p-checkbox>
+                                                <p-checkbox label="Aswesuma Cycle 2" value="Aswesuma_6" [formControl]="aidSelections"></p-checkbox>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h6 class="fw-bold text-secondary mb-4">Other</h6>
+
+                                            <div class="d-flex flex-row gap-5 align-items-center flex-wrap">
+                                                <p-checkbox label="Special" value="Special" [formControl]="aidSelections"></p-checkbox>
+                                                <p-checkbox label="Other" value="Other" [formControl]="aidSelections"></p-checkbox>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="row mt-4" *ngIf="aidSelections.value?.includes('Other')">
@@ -389,20 +413,44 @@
                                             <p style="white-space: normal; word-wrap: break-word;"><strong>Name :</strong> {{ member.get('FullName')?.value }}</p>
                                             <p style="white-space: normal; word-wrap: break-word;"><strong>NIC :</strong> {{ member.get('Nic')?.value }}</p>
 
-                                            <div class="d-flex flex-row gap-5 align-items-center flex-wrap mt-4">
-                                                <p-checkbox label="Special" value="Special" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
-                                                <p-checkbox label="Kidney" value="Kidney" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
-                                                <p-checkbox label="Health" value="Health" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
-                                                <p-checkbox label="Scholarship" value="Scholarship" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
-                                                <p-checkbox label="Disability" value="Disability" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
-                                                <p-checkbox label="Aswesuma Rs 15000" value="Aswesuma_1" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
-                                                <p-checkbox label="Aswesuma Rs 10000" value="Aswesuma_2" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
-                                                <p-checkbox label="Aswesuma Vulnerable Rs 5000" value="Aswesuma_3" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
-                                                <p-checkbox label="Aswesuma Transirnt Rs 5000" value="Aswesuma_4" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
-                                                <p-checkbox label="Aswesuma Appeal" value="Aswesuma_5" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
-                                                <p-checkbox label="Aswesuma Cycle 2" value="Aswesuma_6" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
-                                                <p-checkbox label="Elders" value="Elders" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
-                                                <p-checkbox label="Other Aids" value="Other" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
+                                            <div class="d-flex flex-column gap-4 mt-4">
+                                                <div>
+                                                    <h6 class="fw-bold text-primary mb-4">Medical & Health Support</h6>
+
+                                                    <div class="d-flex flex-row gap-5 align-items-center flex-wrap">
+                                                        <p-checkbox label="Kidney" value="Kidney" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
+                                                        <p-checkbox label="Health" value="Health" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
+                                                        <p-checkbox label="Disability" value="Disability" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
+                                                        <p-checkbox label="Elders" value="Elders" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h6 class="fw-bold text-success mb-4">Education Support</h6>
+
+                                                    <div class="d-flex flex-row gap-5 align-items-center flex-wrap">
+                                                        <p-checkbox label="Scholarship" value="Scholarship" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h6 class="fw-bold text-warning mb-4">Welfare & Financial Aid</h6>
+
+                                                    <div class="d-flex flex-row gap-5 align-items-center flex-wrap">
+                                                        <p-checkbox label="Aswesuma Rs 15000" value="Aswesuma_1" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
+                                                        <p-checkbox label="Aswesuma Rs 10000" value="Aswesuma_2" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
+                                                        <p-checkbox label="Aswesuma Vulnerable Rs 5000" value="Aswesuma_3" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
+                                                        <p-checkbox label="Aswesuma Transirnt Rs 5000" value="Aswesuma_4" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
+                                                        <p-checkbox label="Aswesuma Appeal" value="Aswesuma_5" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
+                                                        <p-checkbox label="Aswesuma Cycle 2" value="Aswesuma_6" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h6 class="fw-bold text-secondary mb-4">Other</h6>
+
+                                                    <div class="d-flex flex-row gap-5 align-items-center flex-wrap">
+                                                        <p-checkbox label="Special" value="Special" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
+                                                        <p-checkbox label="Other Aids" value="Other" [formControl]="getFamilyMemberAidSelections(i)"></p-checkbox>
+                                                    </div>
+                                                </div>
                                             </div>
                                                     
                                             <div class="row mt-4" *ngIf="getFamilyMemberAidSelections(i).value?.includes('Other')">
@@ -420,20 +468,44 @@
                                             <p style="white-space: normal; word-wrap: break-word;"><strong>Name :</strong> {{ child.get('FullName')?.value }}</p>
                                             <p style="white-space: normal; word-wrap: break-word;"><strong>NIC :</strong> {{ child.get('Nic')?.value }}</p>
 
-                                            <div class="d-flex flex-row gap-5 align-items-center flex-wrap mt-4">
-                                                <p-checkbox label="Special" value="Special" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
-                                                <p-checkbox label="Kidney" value="Kidney" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
-                                                <p-checkbox label="Health" value="Health" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
-                                                <p-checkbox label="Scholarship" value="Scholarship" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
-                                                <p-checkbox label="Disability" value="Disability" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
-                                                <p-checkbox label="Aswesuma Rs 15000" value="Aswesuma_1" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
-                                                <p-checkbox label="Aswesuma Rs 10000" value="Aswesuma_2" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
-                                                <p-checkbox label="Aswesuma Vulnerable Rs 5000" value="Aswesuma_3" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
-                                                <p-checkbox label="Aswesuma Transirnt Rs 5000" value="Aswesuma_4" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
-                                                <p-checkbox label="Aswesuma Appeal" value="Aswesuma_5" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
-                                                <p-checkbox label="Aswesuma Cycle 2" value="Aswesuma_6" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
-                                                <p-checkbox label="Elders" value="Elders" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
-                                                <p-checkbox label="Other Aids" value="Other" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
+                                            <div class="d-flex flex-column gap-4 mt-4">
+                                                <div>
+                                                    <h6 class="fw-bold text-primary mb-4">Medical & Health Support</h6>
+
+                                                    <div class="d-flex flex-row gap-5 align-items-center flex-wrap">
+                                                        <p-checkbox label="Kidney" value="Kidney" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
+                                                        <p-checkbox label="Health" value="Health" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
+                                                        <p-checkbox label="Disability" value="Disability" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
+                                                        <p-checkbox label="Elders" value="Elders" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h6 class="fw-bold text-success mb-4">Education Support</h6>
+
+                                                    <div class="d-flex flex-row gap-5 align-items-center flex-wrap">
+                                                        <p-checkbox label="Scholarship" value="Scholarship" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h6 class="fw-bold text-warning mb-4">Welfare & Financial Aid</h6>
+
+                                                    <div class="d-flex flex-row gap-5 align-items-center flex-wrap">
+                                                        <p-checkbox label="Aswesuma Rs 15000" value="Aswesuma_1" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
+                                                        <p-checkbox label="Aswesuma Rs 10000" value="Aswesuma_2" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
+                                                        <p-checkbox label="Aswesuma Vulnerable Rs 5000" value="Aswesuma_3" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
+                                                        <p-checkbox label="Aswesuma Transirnt Rs 5000" value="Aswesuma_4" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
+                                                        <p-checkbox label="Aswesuma Appeal" value="Aswesuma_5" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
+                                                        <p-checkbox label="Aswesuma Cycle 2" value="Aswesuma_6" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h6 class="fw-bold text-secondary mb-4">Other</h6>
+
+                                                    <div class="d-flex flex-row gap-5 align-items-center flex-wrap">
+                                                        <p-checkbox label="Special" value="Special" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
+                                                        <p-checkbox label="Other Aids" value="Other" [formControl]="getFamilyChildAidSelections(i)"></p-checkbox>
+                                                    </div>
+                                                </div>
                                             </div>
 
                                             <div class="row mt-4" *ngIf="getFamilyChildAidSelections(i).value?.includes('Other')">
@@ -484,10 +556,8 @@
                                 </div>
                             </div>
                             <table cellpadding='2' cellspacing='0' style='border-collapse: collapse; width: 100%;'>
-                                <tr><td style='width: 15%;'><strong>Village No</strong></td><td style="white-space: normal; word-wrap: break-word;">: {{ leadData.FamilyNumber || 'NA' }}</td></tr>
-                                <tr><td style='width: 15%;'><strong>Index No</strong></td><td style="white-space: normal; word-wrap: break-word;">: {{ leadData.HouseUnitNumber || 'NA' }}</td></tr>
-                                <tr><td style='width: 15%;'><strong>House Hold No</strong></td><td style="white-space: normal; word-wrap: break-word;">: {{ leadData.SubNumber || 'NA' }}</td></tr>
-                                <tr><td style='width: 15%;'><strong>Total Family Members</strong></td><td style="white-space: normal; word-wrap: break-word;">: {{ leadData.HouseholdNo || 'NA' }}</td></tr>
+                                <tr><td style='width: 15%;'><strong>House Hold No</strong></td><td style="white-space: normal; word-wrap: break-word;">: {{ leadData.HouseUnitNumber || 'NA' }}</td></tr>
+                                <tr><td style='width: 15%;'><strong>Sub No</strong></td><td style="white-space: normal; word-wrap: break-word;">: {{ leadData.SubNumber || 'NA' }}</td></tr>
                                 <tr><td style='width: 15%;'><strong>Householder Name</strong></td><td style="white-space: normal; word-wrap: break-word;">: {{ leadData.FullName.length > 40 ? leadData.FullName.substring(0, 40) + '...' : leadData.FullName || 'NA' }}</td></tr>
                                 <tr><td style='width: 15%;'><strong>Mobile No</strong></td><td style="white-space: normal; word-wrap: break-word;">: {{ leadData.Mobile || 'NA' }}</td></tr>
                             </table>

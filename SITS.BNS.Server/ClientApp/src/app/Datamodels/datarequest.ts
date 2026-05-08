@@ -191,6 +191,7 @@ export class ViewFamilyData {
 }
 
 export class FMembersDto {
+    id: number = 0;
     fullName: string = '';
     nic: string = '';
     birthday: string = '';

@@ -77,9 +77,9 @@ export class AddFamilyComponent implements OnInit {
     private cookieService: CookieService,
   ) {
     this.LeadGenerateForm = this.fb.group({
-      FamilyNumber: ['', Validators.required],
-      HouseUnitNumber: [''],
-      SubNumber: ['', Validators.required],
+      FamilyNumber: [''],
+      HouseUnitNumber: ['', Validators.required],
+      SubNumber: [''],
       HouseholdNo: [''],
 
       FullName: ['', Validators.required],
@@ -175,7 +175,7 @@ export class AddFamilyComponent implements OnInit {
   get isStepValid(): boolean {
     return this.LeadGenerateForm.valid;
   }
-
+  
   async ngOnInit() {
     if (this.stepper) {
       if (!this.isStepValid) {
@@ -270,10 +270,11 @@ export class AddFamilyComponent implements OnInit {
     const newLeads = new leadData();
     newLeads.GramaOfficeCode = this.cookieService.get('e_gramaCode');
     newLeads.OfficerId = this.cookieService.get('e_userid');
-    newLeads.FamilyNumber = formValue.FamilyNumber;
-    newLeads.HouseUnitNumber = formValue.HouseUnitNumber;
-    newLeads.SubNumber = formValue.SubNumber;
-    newLeads.HouseholdNo = formValue.HouseholdNo;
+    newLeads.FamilyNumber = this.cookieService.get('e_gramaCode'); // grama code
+    newLeads.HouseUnitNumber = formValue.HouseUnitNumber; // index
+    newLeads.SubNumber = formValue.SubNumber; //House hold number
+    //newLeads.HouseholdNo = formValue.HouseholdNo; // Family Count
+    newLeads.HouseholdNo = (this.familyMembers.value?.length || 0) + (this.familyChilds.value?.length || 0);
     newLeads.FullName = formValue.FullName;
     newLeads.Gender = formValue.selectedGender?.value || '';
     newLeads.MaritalStatus = formValue.selectedMaritalStatus?.value || '';

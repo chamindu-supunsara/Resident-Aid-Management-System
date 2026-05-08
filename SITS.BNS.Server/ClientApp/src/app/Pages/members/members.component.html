@@ -1,0 +1,298 @@
+<p-card [style]="{'margin-bottom':'1rem'}">
+    <p-toast />
+
+    <div class="d-flex justify-content-between align-items-end" style="margin-bottom: 1rem;">
+        <div>
+            <h3 class="mb-0" style="font-weight: bold;">All Members</h3>
+        </div>
+
+        <div class="d-flex align-items-center gap-3">
+            <p-iconField iconPosition="left">
+            <p-inputIcon styleClass="pi pi-search" />
+            <input
+                type="text"
+                pInputText
+                placeholder="Search by Age"
+                [(ngModel)]="searchText"
+                (ngModelChange)="filterProducts()" />
+            </p-iconField>
+
+            <p-button
+            icon="pi pi-times"
+            [rounded]="true"
+            severity="contrast"
+            (onClick)="ClearSearch()">
+            </p-button>
+
+            <p-button
+            icon="pi pi-file-excel"
+            [rounded]="true"
+            severity="contrast"
+            (onClick)="DownloadExcel(dt)">
+            </p-button>
+
+            <p-button
+            icon="pi pi-file-pdf"
+            [rounded]="true"
+            severity="contrast"
+            (onClick)="DownloadPDF(dt)">
+            </p-button>
+        </div>
+    </div>
+
+    <div *ngIf="ViewAIDFilter.length === 0" style="text-align: center; padding: 1rem;">
+        <div class="row">
+            <p-skeleton height="21rem" />
+        </div>
+    </div>
+
+    <p-table #dt
+        *ngIf="ViewAIDFilter.length > 0"
+        [value]="FilteredUserList"
+        [paginator]="true"
+        [rows]="10"
+        selectionMode="single"
+        [metaKeySelection]="metaKey"
+        (onRowSelect)="onRowSelect($event)"
+        dataKey="id"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        styleClass="p-datatable-striped"
+        [rowsPerPageOptions]="[10, 20, 30]"
+        [globalFilterFields]="['fullName', 'nic', 'gramaCode', 'familyNo', 'houseUnitNo', 'subNo', 'householdNo', 'mobile', 'aidsList']"
+        [scrollable]="true" 
+        scrollHeight="500px" 
+    >
+        <ng-template pTemplate="header">
+            <tr>
+                <th [style.width.%]="20" pSortableColumn="fullName" style="background-color: #e4e4e4; padding: 10px;white-space: normal; word-wrap: break-word;">Full Name<p-sortIcon field="fullName" /></th>
+                <th [style.width.%]="10" pSortableColumn="nic" style="background-color: #e4e4e4; padding: 10px;">NIC<p-sortIcon field="nic" /></th>
+                <th [style.width.%]="10" pSortableColumn="gramaCode" style="background-color: #e4e4e4; padding: 10px;">Wasam No<p-sortIcon field="gramaCode" /></th>
+                <th [style.width.%]="10" pSortableColumn="familyNo" style="background-color: #e4e4e4; padding: 10px;">Village No<p-sortIcon field="familyNo" /></th>
+                <th [style.width.%]="10" pSortableColumn="houseUnitNo" style="background-color: #e4e4e4; padding: 10px;">Index No<p-sortIcon field="houseUnitNo" /></th>
+                <th [style.width.%]="10" pSortableColumn="subNo" style="background-color: #e4e4e4; padding: 10px;">H Hold No<p-sortIcon field="subNo" /></th>
+                <th [style.width.%]="10" pSortableColumn="householdNo" style="background-color: #e4e4e4; padding: 10px;">TF Members<p-sortIcon field="householdNo" /></th>
+                <th [style.width.%]="20" pSortableColumn="aidsList" style="background-color: #e4e4e4; padding: 10px;">AID List<p-sortIcon field="aidsList" /></th>
+            </tr>
+            <tr>
+                <th>
+                    <p-columnFilter type="text" field="fullName" placeholder="Search by name" ariaLabel="Filter Name" />
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="nic" placeholder="Search by NIC" ariaLabel="Filter NIC" />
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="gramaCode" placeholder="Search by Code" ariaLabel="Filter Grama Code" />
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="familyNo" placeholder="Search by Village No" ariaLabel="Filter Village No" />
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="houseUnitNo" placeholder="Search by Index No" ariaLabel="Filter Index No" />
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="subNo" placeholder="Search by Household No" ariaLabel="Filter Household No" />
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="householdNo" placeholder="Search by Members" ariaLabel="Filter Members" />
+                </th>
+                <th>
+                    <!-- <p-columnFilter type="text" field="aidsList" placeholder="Search by AIDs" ariaLabel="Filter AID" /> -->
+                    <p-columnFilter field="aidsList" matchMode="arrayIncludes" [showMenu]="false">
+                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                            <p-multiSelect 
+                            [ngModel]="value" 
+                            [options]="AidsList" 
+                            placeholder="All AIDs" 
+                            (onChange)="filter($event.value)" 
+                            optionLabel="label"
+                            optionValue="value"
+                            display
+                            appendTo="body"
+                            display="chip"
+                            [maxSelectedLabels]="2">
+                                <ng-template let-option pTemplate="item">
+                                <div class="inline-block vertical-align-middle">
+                                    <span class="ml-1 mt-1">{{ option.label }}</span>
+                                </div>
+                                </ng-template>
+                            </p-multiSelect>
+                        </ng-template>
+                    </p-columnFilter>
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-customer>
+            <tr [pSelectableRow]="customer">
+                <td [style.width.%]="20" style="white-space: normal; word-wrap: break-word;">{{ customer.fullName || 'NA' }}</td>
+                <td [style.width.%]="10" style="white-space: normal; word-wrap: break-word;">{{ customer.nic || 'NA' }}</td>
+                <td [style.width.%]="10" style="white-space: normal; word-wrap: break-word;">{{ customer.gramaCode || 'NA' }}</td>
+                <td [style.width.%]="10" style="white-space: normal; word-wrap: break-word;">{{ customer.familyNo || 'NA' }}</td>
+                <td [style.width.%]="10" style="white-space: normal; word-wrap: break-word;">{{ customer.houseUnitNo || 'NA' }}</td>
+                <td [style.width.%]="10" style="white-space: normal; word-wrap: break-word;">{{ customer.subNo || 'NA' }}</td>
+                <td [style.width.%]="10" style="white-space: normal; word-wrap: break-word;">{{ customer.householdNo || 'NA' }}</td>
+                <td [style.width.%]="20" style="white-space: normal; word-wrap: break-word;">
+                    <ng-container *ngIf="customer.aidsList?.length; else noRoles">
+                        <p-tag *ngFor="let role of customer.aidsList" 
+                            [value]="role" 
+                            [rounded]="true" 
+                            [severity]="getSeverity(role.aidTypes)" 
+                            [style]="{ 
+                            'margin-right': '3px', 
+                            'margin-top': '2px', 
+                            'font-size': '10px', 
+                            'padding': '1px 5px', 
+                            'height': '16px', 
+                            'line-height': '12px'
+                            }">
+                        </p-tag>
+                    </ng-container>
+                    <ng-template #noRoles>
+                        <span>N/A</span>
+                    </ng-template>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <ngx-spinner bdcolor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="ball-scale-multiple" [fullScreen]="true"><p style="color: white"> Loading... </p></ngx-spinner>
+</p-card>
+
+<p-dialog header="Manage Member" [modal]="true" [(visible)]="visible" [style]="{ width: '90rem' }" focusOnShow="false">
+    <div class="row">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-12">
+                    <h5 style="font-weight: bold; color: black;">Member Details</h5>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <form [formGroup]="MemberForm">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <p-floatLabel>
+                                        <input pInputText [style]="{'width':'100%'}" id="fullname" name="fullname" formControlName="FullName" [maxlength]="100" />
+                                        <label for="fullname">Full Name *</label>
+                                    </p-floatLabel>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <p-floatLabel>
+                                        <p-calendar [style]="{'width':'100%'}" id="birthday" name="birthday" formControlName="Birthday" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" appendTo="body" />
+                                        <label for="birthday">Birthday *</label>
+                                    </p-floatLabel>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <p-floatLabel>
+                                        <p-dropdown [style]="{'width':'100%'}" [options]="GenderList" optionLabel="label" formControlName="selectedGender" placeholder="Select a Gender" appendTo="body" />
+                                        <label for="gender">Select a Gender *</label>
+                                    </p-floatLabel>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <p-floatLabel>
+                                        <p-dropdown [style]="{'width':'100%'}" [options]="MaritalStatusList" optionLabel="label" formControlName="selectedMaritalStatus" placeholder="Select a Marital Status" appendTo="body" />
+                                        <label for="maritalstatus">Marital Status *</label>
+                                    </p-floatLabel>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4 mt-2">
+                        <div class="col-2">
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <p-floatLabel>
+                                        <input pInputText [style]="{'width':'100%'}" id="nic" name="nic" formControlName="Nic" [maxlength]="12" />
+                                        <label for="nic">NIC *</label>
+                                    </p-floatLabel>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <p-floatLabel>
+                                        <input pInputText [style]="{'width':'100%'}" id="job" name="job" formControlName="Job" [maxlength]="100" />
+                                        <label for="job">Job *</label>
+                                    </p-floatLabel>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <p-floatLabel>
+                                        <p-inputMask [style]="{'width':'100%'}" id="mobile" name="mobile" mask="999 999-9999" formControlName="Mobile" placeholder="999 999-9999" />
+                                        <label for="mobile">Mobile *</label>
+                                    </p-floatLabel>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <p-floatLabel>
+                                        <input pInputText type="number" [style]="{'width':'100%'}" id="income" name="income" formControlName="Income" [maxlength]="16" />
+                                        <label for="income">Income *</label>
+                                    </p-floatLabel>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <hr>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <h5 style="font-weight: bold; color: black;">AIDs Details</h5>
+                    </div>
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <div class="d-flex flex-row gap-4 align-items-center flex-wrap mt-4">
+                            <p-checkbox label="Special" value="Special" [(ngModel)]="HouseList.specialAids" [ngModelOptions]="{standalone: true}" inputId="special" [binary]="true" ></p-checkbox>
+                            <p-checkbox label="Kidney" [(ngModel)]="HouseList.kidney" [ngModelOptions]="{standalone: true}" inputId="kidney" [binary]="true" ></p-checkbox>
+                            <p-checkbox label="Health" [(ngModel)]="HouseList.health" [ngModelOptions]="{standalone: true}" inputId="health" [binary]="true" ></p-checkbox>
+                            <p-checkbox label="Scholarship" [(ngModel)]="HouseList.scholarship" [ngModelOptions]="{standalone: true}" inputId="scholarship" [binary]="true" ></p-checkbox>
+                            <p-checkbox label="Disability" [(ngModel)]="HouseList.disability" [ngModelOptions]="{standalone: true}" inputId="disability" [binary]="true" ></p-checkbox>
+                            <p-checkbox label="Aswesuma Rs 15000" [(ngModel)]="HouseList.aswesuma_1" [ngModelOptions]="{standalone: true}" inputId="aswesuma1" [binary]="true" ></p-checkbox>
+                            <p-checkbox label="Aswesuma Rs 10000" [(ngModel)]="HouseList.aswesuma_2" [ngModelOptions]="{standalone: true}" inputId="aswesuma2" [binary]="true" ></p-checkbox>
+                            <p-checkbox label="Aswesuma Vulnerable Rs 5000" [(ngModel)]="HouseList.aswesuma_3" [ngModelOptions]="{standalone: true}" inputId="aswesuma3" [binary]="true" ></p-checkbox>
+                            <p-checkbox label="Aswesuma Transient Rs 5000" [(ngModel)]="HouseList.aswesuma_4" [ngModelOptions]="{standalone: true}" inputId="aswesuma4" [binary]="true" ></p-checkbox>
+                            <p-checkbox label="Aswesuma Appeal" [(ngModel)]="HouseList.aswesuma_5" [ngModelOptions]="{standalone: true}" inputId="aswesuma5" [binary]="true" ></p-checkbox>
+                            <p-checkbox label="Aswesuma Cycle 2" [(ngModel)]="HouseList.aswesuma_6" inputId="aswesuma6" [binary]="true" ></p-checkbox>
+                            <p-checkbox label="Elders" [(ngModel)]="HouseList.elders" [ngModelOptions]="{standalone: true}" inputId="elders" [binary]="true" ></p-checkbox>
+                            <p-checkbox label="Other" [(ngModel)]="HouseList.other" [ngModelOptions]="{standalone: true}" inputId="other" [binary]="true" ></p-checkbox>
+                        </div>
+
+                        <div class="row mt-4" *ngIf="HouseList.other === true">
+                            <textarea pInputTextarea rows="3" [(ngModel)]="HouseList.others" [ngModelOptions]="{standalone: true}" placeholder="Other Aid Details"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="mt-4">
+                <div class="row mt-2">
+                    <div class="d-flex justify-content-between w-100">
+                        <button pButton pRipple icon="pi pi-trash" iconPos="right" severity="danger" (click)="DeleteHouse()"></button>
+                        <button pButton pRipple label="Update" iconPos="right" severity="contrast" (click)="UpdateHouse()" [disabled]="!isStepValid" type="submit"></button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</p-dialog>
