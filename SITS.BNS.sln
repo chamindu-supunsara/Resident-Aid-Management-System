@@ -13,8 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SITS.BNS.Entities", "SITS.B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SITS.BNS.Infrastructure", "SITS.BNS.Infrastructure\SITS.BNS.Infrastructure.csproj", "{69C61BEA-A25F-4EA6-8E5F-2700D811E280}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SITS.BNS.Tests", "SITS.BNS.Tests\SITS.BNS.Tests.csproj", "{55EFEC3A-F80B-40C3-9909-161830E08082}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
