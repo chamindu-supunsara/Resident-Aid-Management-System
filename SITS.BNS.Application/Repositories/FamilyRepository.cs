@@ -382,6 +382,7 @@ namespace SITS.BNS.Application.Repositories
                             .Where(m => m.IsActive)
                             .Select(m => new FMembersDto
                             {
+                                id = m.ID,
                                 FullName = m.FullName,
                                 Nic = m.NIC,
                                 Birthday = m.BirthDay,
