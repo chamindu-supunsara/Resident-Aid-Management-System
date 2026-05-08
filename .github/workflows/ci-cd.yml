@@ -10,9 +10,9 @@ env:
   DOTNET_VERSION: '8.0.x'
   NODE_VERSION: '20'
   AZURE_WEBAPP_NAME: 'residentaid'       # your App Service name from 2.5
-  WEB_PROJECT_PATH: 'src/SITS.BNS.Server'           # path to your Web project
-  INFRA_PROJECT_PATH: 'src/SITS.BNS.Infrastructure' # path to Infrastructure project
-  ANGULAR_DIR: 'src/SITS.BNS.Server/ClientApp'      # path to Angular app
+  WEB_PROJECT_PATH: 'SITS.BNS.Server'           # path to your Web project
+  INFRA_PROJECT_PATH: 'SITS.BNS.Infrastructure' # path to Infrastructure project
+  ANGULAR_DIR: 'SITS.BNS.Server/ClientApp'      # path to Angular app
 
 jobs:
   build-and-deploy:
@@ -28,6 +28,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: ${{ env.ANGULAR_DIR }}/package-lock.json
 
       - name: Install Angular dependencies
         working-directory: ${{ env.ANGULAR_DIR }}
