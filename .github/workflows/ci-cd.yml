@@ -62,6 +62,45 @@ jobs:
         env:
           ConnectionStrings__DefaultConnection: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
 
+      # 6b. Full-stack login E2E (Angular UI → ASP.NET api/Login/Login → database)
+      - name: Publish application for E2E
+        run: dotnet publish SITS.BNS.Server/SITS.BNS.csproj --configuration Release --output ./publish-e2e
+
+      - name: Run Cypress login E2E
+        env:
+          ConnectionStrings__DefaultConnection: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
+          CYPRESS_BASE_URL: http://127.0.0.1:5087
+          CYPRESS_LOGIN_EMAIL: ${{ secrets.E2E_LOGIN_EMAIL }}
+          CYPRESS_LOGIN_PASSWORD: ${{ secrets.E2E_LOGIN_PASSWORD }}
+        run: |
+          set -e
+          cd publish-e2e
+          ASPNETCORE_ENVIRONMENT=Development \
+          ASPNETCORE_URLS=http://127.0.0.1:5087 \
+          dotnet SITS.BNS.dll &
+          echo $! > /tmp/e2e-dotnet.pid
+          cd ..
+          for i in $(seq 1 40); do
+            if curl -sf http://127.0.0.1:5087/ >/dev/null; then
+              echo "E2E server ready"
+              break
+            fi
+            if [ "$i" -eq 40 ]; then
+              echo "Timed out waiting for server"
+              exit 1
+            fi
+            sleep 2
+          done
+          cd SITS.BNS.Server/ClientApp
+          npx cypress run --spec cypress/e2e/login.cy.ts
+
+      - name: Stop E2E server
+        if: always()
+        run: |
+          if [ -f /tmp/e2e-dotnet.pid ]; then
+            kill "$(cat /tmp/e2e-dotnet.pid)" 2>/dev/null || true
+          fi
+
       # 7. Publish app
       - name: Publish application
         run: |
