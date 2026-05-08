@@ -16,12 +16,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # ── 1. Get the code ───────────────────────────────
+      # 1. Get the code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # ── 2. Build Angular 18 ───────────────────────────
-      - name: Setup Node.js 20
+      # 2. Build Angular
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
@@ -30,25 +30,25 @@ jobs:
         working-directory: SITS.BNS.Server/ClientApp
         run: npm install
 
-      - name: Build Angular 18 (production)
+      - name: Build Angular
         working-directory: SITS.BNS.Server/ClientApp
         run: npm run build -- --configuration production
 
-      # ── 3. Setup .NET 8 ───────────────────────────────
-      - name: Setup .NET 8
+      # 3. Setup .NET 
+      - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      # ── 4. Restore NuGet packages ─────────────────────
+      # 4. Restore NuGet packages
       - name: Restore NuGet packages
         run: dotnet restore SITS.BNS.sln
 
-      # ── 5. Build solution ─────────────────────────────
+      # 5. Build solution
       - name: Build solution
         run: dotnet build SITS.BNS.sln --configuration Release --no-restore
 
-      # ── 6. EF Core migrations ─────────────────────────
+      # 6. EF Core migrations
       - name: Install EF Core CLI tool
         run: dotnet tool install --global dotnet-ef
 
@@ -62,7 +62,7 @@ jobs:
         env:
           ConnectionStrings__DefaultConnection: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
 
-      # ── 7. Publish app ────────────────────────────────
+      # 7. Publish app
       - name: Publish application
         run: |
           dotnet publish SITS.BNS.Server/SITS.BNS.csproj \
@@ -70,7 +70,7 @@ jobs:
             --output ./publish \
             --no-build
 
-      # ── 8. Deploy to Azure ────────────────────────────
+      # 8. Deploy to Azure
       - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v3
         with:
