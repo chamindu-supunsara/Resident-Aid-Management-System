@@ -29,7 +29,6 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          cache-dependency-path: ${{ env.ANGULAR_DIR }}/package-lock.json
 
       - name: Install Angular dependencies
         working-directory: ${{ env.ANGULAR_DIR }}
