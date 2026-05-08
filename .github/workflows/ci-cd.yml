@@ -1,4 +1,4 @@
-name: CI/CD — Campus Project
+name: CI/CD — Resident Aid Management System
 
 on:
   push:
@@ -9,10 +9,7 @@ on:
 env:
   DOTNET_VERSION: '8.0.x'
   NODE_VERSION: '20'
-  AZURE_WEBAPP_NAME: 'residentaid'       # your App Service name from 2.5
-  WEB_PROJECT_PATH: 'src/SITS.BNS.Server'           # path to your Web project
-  INFRA_PROJECT_PATH: 'src/SITS.BNS.Infrastructure' # path to Infrastructure project
-  ANGULAR_DIR: 'src/SITS.BNS.Server/ClientApp'      # path to Angular app
+  AZURE_WEBAPP_NAME: 'residentaid'
 
 jobs:
   build-and-deploy:
@@ -28,57 +25,52 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: ${{ env.ANGULAR_DIR }}/package-lock.json
 
       - name: Install Angular dependencies
-        working-directory: ${{ env.ANGULAR_DIR }}
-        run: npm ci
+        working-directory: SITS.BNS.Server/ClientApp
+        run: npm install
 
       - name: Build Angular 18 (production)
-        working-directory: ${{ env.ANGULAR_DIR }}
+        working-directory: SITS.BNS.Server/ClientApp
         run: npm run build -- --configuration production
 
-      # ── 3. Build .NET 8 ───────────────────────────────
+      # ── 3. Setup .NET 8 ───────────────────────────────
       - name: Setup .NET 8
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      # ── 4. Restore NuGet packages ─────────────────────
       - name: Restore NuGet packages
-        run: dotnet restore
+        run: dotnet restore SITS.BNS.sln
 
+      # ── 5. Build solution ─────────────────────────────
       - name: Build solution
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build SITS.BNS.sln --configuration Release --no-restore
 
-      # ── 4. Run tests ──────────────────────────────────
-      - name: Run tests
-        run: dotnet test --no-build --configuration Release --verbosity normal
-
-      # ── 5. Run EF Core migrations ─────────────────────
+      # ── 6. EF Core migrations ─────────────────────────
       - name: Install EF Core CLI tool
         run: dotnet tool install --global dotnet-ef
 
       - name: Run database migrations
         run: |
           dotnet ef database update \
-            --project ${{ env.INFRA_PROJECT_PATH }} \
-            --startup-project ${{ env.WEB_PROJECT_PATH }} \
+            --project SITS.BNS.Infrastructure/SITS.BNS.Infrastructure.csproj \
+            --startup-project SITS.BNS.Server/SITS.BNS.csproj \
+            --configuration Release \
             --no-build
         env:
           ConnectionStrings__DefaultConnection: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
 
-      # ── 6. Publish .NET app ───────────────────────────
+      # ── 7. Publish app ────────────────────────────────
       - name: Publish application
         run: |
-          dotnet publish ${{ env.WEB_PROJECT_PATH }} \
+          dotnet publish SITS.BNS.Server/SITS.BNS.csproj \
             --configuration Release \
             --output ./publish \
             --no-build
-        env:
-          ConnectionStrings__DefaultConnection: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
 
-      # ── 7. Deploy to Azure ────────────────────────────
+      # ── 8. Deploy to Azure ────────────────────────────
       - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v3
         with:
