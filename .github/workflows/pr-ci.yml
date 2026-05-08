@@ -5,6 +5,10 @@ on:
     branches:
       - Dev_Chathura
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   create-pull-request:
     runs-on: ubuntu-latest
