@@ -109,6 +109,7 @@ export class HousesComponent implements OnInit {
     this.leadsService.GetHousebyID(this.HouseID).subscribe((resp) => {
       if (resp) {
         this.MembersList = resp;
+        console.log('Members List:', this.MembersList);
         this.spinner.hide();
       } else {
         this.spinner.hide();
@@ -183,6 +184,29 @@ export class HousesComponent implements OnInit {
           severity: 'error',
           summary: 'Error',
           detail: 'Failed to Delete House',
+        });
+      }
+    });
+  }
+
+  DeleteMember(member: any) {
+    const memberData = { ID: member.id };
+
+    this.leadsService.DeleteMember(memberData).then(async (resp) => {
+      if (resp) {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Member Deleted Successfully',
+        });
+        this.HouseForm.reset();
+        this.visible = false;
+        await this.GetFamilyMembers();
+      } else {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to Delete Member',
         });
       }
     });

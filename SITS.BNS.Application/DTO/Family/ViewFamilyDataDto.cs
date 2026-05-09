@@ -22,6 +22,7 @@ namespace SITS.BNS.Application.DTO.Family
 
     public class FMembersDto
     {
+        public int id { get; set; }
         public string? FullName { get; set; }
         public string? Nic { get; set; }
         public DateTime? Birthday { get; set; }

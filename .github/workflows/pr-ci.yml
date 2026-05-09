@@ -1,0 +1,40 @@
+name: Create Pull Request to CICD_Main
+
+on:
+  push:
+    branches:
+      - Dev_Chathura
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  create-pull-request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create Pull Request via GitHub CLI
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Check if a PR already exists for this branch
+          EXISTING_PR=$(gh pr list \
+            --head "Dev_Chathura" \
+            --base "CICD_Main" \
+            --state open \
+            --json number \
+            --jq '.[0].number')
+
+          if [ -n "$EXISTING_PR" ]; then
+            echo "PR #$EXISTING_PR already exists. Skipping creation."
+          else
+            gh pr create \
+              --head "Dev_Chathura" \
+              --base "CICD_Main" \
+              --title "Merge Dev_Chathura → CICD_Main" \
+              --body "Automated PR created by GitHub Actions. Push detected on \`Dev_Chathura\` branch."
+            echo "Pull Request created successfully."
+          fi

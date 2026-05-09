@@ -35,9 +35,9 @@
         <ng-template pTemplate="header">
             <tr>
                 <th [style.width.%]="12" pSortableColumn="familyNo" style="background-color: #e4e4e4; padding: 10px;">Village No<p-sortIcon field="familyNo" /></th>
-                <th [style.width.%]="12" pSortableColumn="houseUnitNo" style="background-color: #e4e4e4; padding: 10px;">Index No<p-sortIcon field="houseUnitNo" /></th>
-                <th [style.width.%]="12" pSortableColumn="subNo" style="background-color: #e4e4e4; padding: 10px;">Household No<p-sortIcon field="subNo" /></th>
-                <th [style.width.%]="12" pSortableColumn="householdNo" style="background-color: #e4e4e4; padding: 10px;">TF Members<p-sortIcon field="householdNo" /></th>
+                <th [style.width.%]="12" pSortableColumn="houseUnitNo" style="background-color: #e4e4e4; padding: 10px;">Household No<p-sortIcon field="houseUnitNo" /></th>
+                <th [style.width.%]="12" pSortableColumn="subNo" style="background-color: #e4e4e4; padding: 10px;">Sub No<p-sortIcon field="subNo" /></th>
+                <th [style.width.%]="12" pSortableColumn="householdNo" style="background-color: #e4e4e4; padding: 10px;">Members<p-sortIcon field="householdNo" /></th>
                 <th [style.width.%]="15" pSortableColumn="wasama" style="background-color: #e4e4e4; padding: 10px;">Wasama<p-sortIcon field="wasama" /></th>
                 <th [style.width.%]="12" pSortableColumn="wasamNo" style="background-color: #e4e4e4; padding: 10px;">Wasam No<p-sortIcon field="wasamNo" /></th>
                 <th [style.width.%]="25" pSortableColumn="officerName" style="background-color: #e4e4e4; padding: 10px;">Officer<p-sortIcon field="officerName" /></th>
@@ -91,8 +91,8 @@
             </div>
             <table cellpadding='2' cellspacing='0' style='border-collapse: collapse; width: 100%;'>
                 <tr><td style='width: 35%;'><strong>Village No</strong></td><td>: {{ MembersList.familyNo }}</td></tr>
-                <tr><td style='width: 35%;'><strong>Index No</strong></td><td>: {{ MembersList.houseUnitNo }}</td></tr>
-                <tr><td style='width: 35%;'><strong>House Hold No</strong></td><td>: {{ MembersList.subNo }}</td></tr>
+                <tr><td style='width: 35%;'><strong>House Hold No</strong></td><td>: {{ MembersList.houseUnitNo }}</td></tr>
+                <tr><td style='width: 35%;'><strong>Sub No</strong></td><td>: {{ MembersList.subNo }}</td></tr>
                 <tr><td style='width: 35%;'><strong>Total Family Members</strong></td><td>: {{ MembersList.householdNo }}</td></tr>
             </table>
         </div>
@@ -131,6 +131,7 @@
                         <th style="width: 10%; text-align: center;">Mobile</th>
                         <th style="width: 5%;">Income</th>
                         <th style="width: 15%;">AIDs</th>
+                        <th style="width: 5%; text-align: center;">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -145,6 +146,9 @@
                         <td style="width: 10%; text-align: center;">{{ member.mobile || 'N/A' }}</td>
                         <td style="width: 5%; word-break: break-all; white-space: normal;">{{ member.income || 'N/A' }}</td>
                         <td style="width: 15%; word-break: break-all; white-space: normal;">{{ member.aidsList.length ? member.aidsList.join(', ') : 'N/A' }}</td>
+                        <td style="width: 5%; text-align: center;">
+                            <button pButton type="button" icon="pi pi-trash" severity="warning" (click)="DeleteMember(member)" [disabled]="MembersList.familyMembers.length === 1" class="p-button-rounded p-button-outlined"></button>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -177,7 +181,7 @@
                                 <div class="col-12">
                                     <p-floatLabel>
                                         <input pInputText [style]="{'width':'100%'}" id="houseunitno" name="houseunitno" formControlName="HouseUnitNo" [maxlength]="30" />
-                                            <label for="houseunitno">Index No</label>
+                                            <label for="houseunitno">House Hold No</label>
                                     </p-floatLabel>
                                 </div>
                             </div>
@@ -187,7 +191,7 @@
                                 <div class="col-12">
                                     <p-floatLabel>
                                         <input pInputText [style]="{'width':'100%'}" id="subno" name="subno" formControlName="SubNo" [maxlength]="30" />
-                                            <label for="subno">House Hold No</label>
+                                            <label for="subno">Sub No</label>
                                     </p-floatLabel>
                                 </div>
                             </div>
