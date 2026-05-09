@@ -452,6 +452,38 @@ namespace SITS.BNS.Controllers
         }
 
         [AllowAnonymous]
+        [HttpPost("AddMember")]
+        public async Task<int> AddMember(AddMemberDto req)
+        {
+            try
+            {
+                if (req.FamilyId != 0)
+                {
+                    return await _unitOfWork.FamilyMembers.AddMember(req);
+                }
+
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                await _logger.Log(LogLevel.Error, new Entities.Common.LogFormat
+                {
+                    Request = "Add Member",
+                    Description = $"{ex.Message}{(ex.InnerException != null ? $" Inner exception: {ex.InnerException.Message}" : "")}",
+                    UserID = _currentUserService.UserId,
+                    TimeStamp = DateTime.Now,
+                    AccessType = "",
+                    Message = ex.Message,
+                    RequestType = requestapath,
+                    Severity = "High",
+                    StatusCode = 500
+                });
+
+                throw;
+            }
+        }
+
+        [AllowAnonymous]
         [HttpPost("DeleteHouse")]
         public async Task<int> DeleteHouse(DeleteHouseDto req)
         {

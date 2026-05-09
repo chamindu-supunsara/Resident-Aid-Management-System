@@ -262,6 +262,45 @@ export class AddFamilyComponent implements OnInit {
     this.leadData.FullName = formValue.FullName;
     this.leadData.Mobile = formValue.Mobile;
     this.leadData.Nic = formValue.Nic;
+    this.leadData.Gender = this.dropdownLabel(formValue.selectedGender);
+    this.leadData.MaritalStatus = this.dropdownLabel(formValue.selectedMaritalStatus);
+    this.leadData.Job = formValue.Job;
+    this.leadData.Income =
+      formValue.Income != null && formValue.Income !== ''
+        ? String(formValue.Income)
+        : '';
+    this.leadData.Birthday = this.formatSummaryDate(formValue.Birthday);
+  }
+
+  /** Readable label from p-dropdown value `{ label, value }` or plain string. */
+  dropdownLabel(value: { label?: string; value?: string } | string | null | undefined): string {
+    if (value == null || value === '') {
+      return 'NA';
+    }
+    if (typeof value === 'object' && 'label' in value && value.label) {
+      return value.label;
+    }
+    if (typeof value === 'string') {
+      return value;
+    }
+    return 'NA';
+  }
+
+  formatSummaryDate(value: unknown): string {
+    if (value == null || value === '') {
+      return 'NA';
+    }
+    if (value instanceof Date) {
+      return value.toLocaleDateString();
+    }
+    return String(value);
+  }
+
+  formatAidSelections(selected: string[] | null | undefined): string {
+    if (!selected?.length) {
+      return 'None selected';
+    }
+    return selected.join(', ');
   }
 
   async SubmitLeadForm() {

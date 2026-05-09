@@ -15,6 +15,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
+import { CheckboxModule } from 'primeng/checkbox';
+import { InputMaskModule } from 'primeng/inputmask';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { RippleModule } from 'primeng/ripple';
 
 @NgModule({
   declarations: [HousesComponent],
@@ -26,6 +32,12 @@ import { ButtonModule } from 'primeng/button';
     FormsModule,
     TableModule,
     ButtonModule,
+    RippleModule,
+    CalendarModule,
+    DropdownModule,
+    CheckboxModule,
+    InputMaskModule,
+    InputTextareaModule,
     InputTextModule,
     FloatLabelModule,
     CardModule,

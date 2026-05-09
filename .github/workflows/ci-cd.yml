@@ -1,0 +1,116 @@
+name: CI/CD — Resident Aid Management System
+
+on:
+  push:
+    branches: [ CICD_Main ]
+
+env:
+  DOTNET_VERSION: '8.0.x'
+  NODE_VERSION: '20'
+  AZURE_WEBAPP_NAME: 'residentaid'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Get the code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Build Angular
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Angular dependencies
+        working-directory: SITS.BNS.Server/ClientApp
+        run: npm install
+
+      - name: Build Angular
+        working-directory: SITS.BNS.Server/ClientApp
+        run: npm run build -- --configuration production
+
+      # 3. Setup .NET 
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      # 4. Restore NuGet packages
+      - name: Restore NuGet packages
+        run: dotnet restore SITS.BNS.sln
+
+      # 5. Build solution
+      - name: Build solution
+        run: dotnet build SITS.BNS.sln --configuration Release --no-restore
+
+      # 6. EF Core migrations
+      - name: Install EF Core CLI tool
+        run: dotnet tool install --global dotnet-ef
+
+      - name: Run database migrations
+        run: |
+          dotnet ef database update \
+            --project SITS.BNS.Infrastructure/SITS.BNS.Infrastructure.csproj \
+            --startup-project SITS.BNS.Server/SITS.BNS.csproj \
+            --configuration Release \
+            --no-build
+        env:
+          ConnectionStrings__DefaultConnection: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
+
+      # 6b. Full-stack login E2E
+      - name: Publish application for E2E
+        run: dotnet publish SITS.BNS.Server/SITS.BNS.csproj --configuration Release --output ./publish-e2e
+
+      - name: Run Cypress login E2E
+        env:
+          ConnectionStrings__DefaultConnection: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
+          CYPRESS_BASE_URL: http://127.0.0.1:5087
+          CYPRESS_LOGIN_EMAIL: ${{ secrets.E2E_LOGIN_EMAIL }}
+          CYPRESS_LOGIN_PASSWORD: ${{ secrets.E2E_LOGIN_PASSWORD }}
+        run: |
+          set -e
+          cd publish-e2e
+          ASPNETCORE_ENVIRONMENT=Development \
+          ASPNETCORE_URLS=http://127.0.0.1:5087 \
+          dotnet SITS.BNS.dll &
+          echo $! > /tmp/e2e-dotnet.pid
+          cd ..
+          for i in $(seq 1 40); do
+            if curl -sf http://127.0.0.1:5087/ >/dev/null; then
+              echo "E2E server ready"
+              break
+            fi
+            if [ "$i" -eq 40 ]; then
+              echo "Timed out waiting for server"
+              exit 1
+            fi
+            sleep 2
+          done
+          cd SITS.BNS.Server/ClientApp
+          npx cypress run --spec cypress/e2e/login.cy.ts
+
+      - name: Stop E2E server
+        if: always()
+        run: |
+          if [ -f /tmp/e2e-dotnet.pid ]; then
+            kill "$(cat /tmp/e2e-dotnet.pid)" 2>/dev/null || true
+          fi
+
+      # 7. Publish app
+      - name: Publish application
+        run: |
+          dotnet publish SITS.BNS.Server/SITS.BNS.csproj \
+            --configuration Release \
+            --output ./publish \
+            --no-build
+
+      # 8. Deploy to Azure
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ./publish

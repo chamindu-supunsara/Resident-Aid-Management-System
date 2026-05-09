@@ -32,5 +32,7 @@ namespace SITS.BNS.Application.DTO.Family
         public string? Mobile { get; set; }
         public decimal? Income { get; set; }
         public List<string>? AidsList { get; set; }
+        /// <summary>True when stored like a child record (no job / marital status).</summary>
+        public bool IsChild { get; set; }
     }
 }

@@ -391,6 +391,7 @@ namespace SITS.BNS.Application.Repositories
                                 Job = m.Job,
                                 Mobile = m.PhoneNumber,
                                 Income = m.Income,
+                                IsChild = m.Job == null && m.MaritalStatus == null,
                                 AidsList = _context.AidDetail
                                     .Where(a => a.MemberId == m.ID)
                                     .AsEnumerable()

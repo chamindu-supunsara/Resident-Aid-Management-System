@@ -201,6 +201,7 @@ export class FMembersDto {
     mobile: string = '';
     income: number = 0;
     aidsList: string[] = [];
+    isChild: boolean = false;
 }
 
 export class ViewMemberData {
