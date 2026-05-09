@@ -3,7 +3,7 @@ import { environment } from '../../environments/environment';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { DeleteForm, LeadStatusForm, UpdateHouseForm, UpdateMemberForm, ViewOfficersForm } from '../Datamodels/daraforms';
+import { AddMemberForm, DeleteForm, LeadStatusForm, UpdateHouseForm, UpdateMemberForm, ViewOfficersForm } from '../Datamodels/daraforms';
 import { catchError, Observable, retry, throwError } from 'rxjs';
 import { leadData } from '../Datamodels/datarequest';
 
@@ -93,6 +93,20 @@ export class LeadsService {
     return new Promise((resolve, reject) => {
       this._httpClient
         .post(this._baseUrl + 'api/Leads/UpdateMember', formData)
+        .subscribe(
+          (response: any) => {
+            this.responceData = response;
+            resolve(this.responceData);
+          },
+          reject
+        );
+    });
+  }
+
+  AddMember(formData: AddMemberForm): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this._httpClient
+        .post(this._baseUrl + 'api/Leads/AddMember', formData)
         .subscribe(
           (response: any) => {
             this.responceData = response;

@@ -112,9 +112,13 @@
     <hr *ngIf="MembersList.familyMembers && MembersList.familyMembers.length > 0">
     <div *ngIf="MembersList.familyMembers && MembersList.familyMembers.length > 0" class="row mt-2">
         <div class="col-12">
-            <div class="row">
-                <div class="col-12">
-                    <h5 style="font-weight: bold; color: black;">Family Members</h5>
+            <div class="row align-items-center">
+                <div class="col-12 col-md-6">
+                    <h5 class="mb-0" style="font-weight: bold; color: black;">Family Members</h5>
+                </div>
+                <div class="col-12 col-md-6 d-flex flex-wrap justify-content-md-end gap-2 mt-2 mt-md-0">
+                    <button pButton pRipple type="button" label="Add member" icon="pi pi-user-plus" severity="contrast" (click)="openAddMember(false)"></button>
+                    <button pButton pRipple type="button" label="Add child" icon="pi pi-plus" severity="secondary" (click)="openAddMember(true)"></button>
                 </div>
             </div>
             <div class="row mt-2">
@@ -131,13 +135,16 @@
                         <th style="width: 10%; text-align: center;">Mobile</th>
                         <th style="width: 5%;">Income</th>
                         <th style="width: 15%;">AIDs</th>
-                        <th style="width: 5%; text-align: center;">Actions</th>
+                        <th style="width: 8%; text-align: center;">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr *ngFor="let member of MembersList.familyMembers; let i = index">
                         <td style="width: 5%; text-align: center;">{{ i + 1 }}</td>
-                        <td style="width: 10%; word-break: break-all; white-space: normal;">{{ member.fullName || 'N/A' }}</td>
+                        <td style="width: 10%; word-break: break-all; white-space: normal;">
+                            {{ member.fullName || 'N/A' }}
+                            <span *ngIf="member.isChild" class="ms-1 badge bg-info text-dark" style="font-size: 0.7rem;">Child</span>
+                        </td>
                         <td style="width: 10%; text-align: center;">{{ member.nic || 'N/A' }}</td>
                         <td style="width: 10%; text-align: center;">{{ member.birthday ? (member.birthday | date:'yyyy-MM-dd') : 'N/A' }}</td>
                         <td style="width: 10%; text-align: center;">{{ member.maritalStatus || 'N/A' }}</td>
@@ -146,8 +153,9 @@
                         <td style="width: 10%; text-align: center;">{{ member.mobile || 'N/A' }}</td>
                         <td style="width: 5%; word-break: break-all; white-space: normal;">{{ member.income || 'N/A' }}</td>
                         <td style="width: 15%; word-break: break-all; white-space: normal;">{{ member.aidsList.length ? member.aidsList.join(', ') : 'N/A' }}</td>
-                        <td style="width: 5%; text-align: center;">
-                            <button pButton type="button" icon="pi pi-trash" severity="warning" (click)="DeleteMember(member)" [disabled]="MembersList.familyMembers.length === 1" class="p-button-rounded p-button-outlined"></button>
+                        <td style="width: 8%; text-align: center; white-space: nowrap;">
+                            <button pButton pRipple type="button" icon="pi pi-pencil" severity="info" (click)="openEditMember(member)" class="p-button-rounded p-button-outlined me-1"></button>
+                            <button pButton pRipple type="button" icon="pi pi-trash" severity="warning" (click)="DeleteMember(member)" [disabled]="MembersList.familyMembers.length === 1" class="p-button-rounded p-button-outlined"></button>
                         </td>
                     </tr>
                     </tbody>
@@ -218,4 +226,123 @@
             </div>
         </div>
     </div>
+</p-dialog>
+
+<p-dialog
+    [header]="memberDialogHeader"
+    [modal]="true"
+    [(visible)]="memberDialogVisible"
+    [style]="{ width: '52rem', maxWidth: '95vw' }"
+    [dismissableMask]="true"
+    focusOnShow="false">
+    <form [formGroup]="MemberForm" (ngSubmit)="saveMemberDialog()" class="text-start">
+        <div class="row" style="margin-top:1%">
+            <div class="col-12 col-md-6">
+                <div class="mt-3">
+                    <p-floatLabel>
+                        <input pInputText id="m-fullname" formControlName="FullName" class="w-100" maxlength="100" />
+                        <label for="m-fullname">Full name *</label>
+                    </p-floatLabel>
+                </div>
+            </div>
+            <div class="col-12 col-md-3">
+                <div class="mt-3">
+                    <p-floatLabel>
+                        <p-calendar id="m-birthday" formControlName="Birthday" [showIcon]="true" [iconDisplay]="'input'" appendTo="body" styleClass="w-100" inputStyleClass="w-100" />
+                        <label for="m-birthday">Birthday *</label>
+                    </p-floatLabel>
+                </div>
+            </div>
+            <div class="col-12 col-md-3">
+                <div class="mt-3">
+                    <p-floatLabel>
+                        <p-dropdown inputId="m-gender" [options]="GenderList" optionLabel="label" formControlName="selectedGender" placeholder="Gender" appendTo="body" styleClass="w-100" />
+                        <label for="m-gender">Gender *</label>
+                    </p-floatLabel>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="margin-top:1%" *ngIf="!memberDialogIsChild">
+            <div class="col-12 col-md-3">
+                <div class="mt-3">
+                    <p-floatLabel>
+                        <p-dropdown inputId="m-marital" [options]="MaritalStatusList" optionLabel="label" formControlName="selectedMaritalStatus" placeholder="Marital status" appendTo="body" styleClass="w-100" />
+                        <label for="m-marital">Marital status *</label>
+                    </p-floatLabel>
+                </div>
+            </div>
+            <div class="col-12 col-md-3">
+                <div class="mt-3">
+                    <p-floatLabel>
+                        <input pInputText id="m-nic" formControlName="Nic" class="w-100" maxlength="12" />
+                        <label for="m-nic">NIC *</label>
+                    </p-floatLabel>
+                </div>
+            </div>
+            <div class="col-12 col-md-3">
+                <div class="mt-3">
+                    <p-floatLabel>
+                        <input pInputText id="m-job" formControlName="Job" class="w-100" maxlength="100" />
+                        <label for="m-job">Job *</label>
+                    </p-floatLabel>
+                </div>
+            </div>
+            <div class="col-12 col-md-3">
+                <div class="mt-3">
+                    <p-floatLabel>
+                        <p-inputMask id="m-mobile" mask="999 999-9999" formControlName="Mobile" styleClass="w-100" placeholder="999 999-9999" />
+                        <label for="m-mobile">Mobile *</label>
+                    </p-floatLabel>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="margin-top:1%" *ngIf="memberDialogIsChild">
+            <div class="col-12 col-md-6">
+                <div class="mt-3">
+                    <p-floatLabel>
+                        <input pInputText id="m-nic-child" formControlName="Nic" class="w-100" maxlength="12" />
+                        <label for="m-nic-child">NIC</label>
+                    </p-floatLabel>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="margin-top:1%" *ngIf="!memberDialogIsChild">
+            <div class="col-12 col-md-4">
+                <div class="mt-3">
+                    <p-floatLabel>
+                        <input pInputText id="m-income" formControlName="Income" class="w-100" maxlength="16" />
+                        <label for="m-income">Income *</label>
+                    </p-floatLabel>
+                </div>
+            </div>
+        </div>
+
+        <hr class="my-4" />
+        <h6 class="fw-bold mb-3">Aid selections</h6>
+        <div class="row g-2">
+            <div class="col-6 col-md-4"><p-checkbox [binary]="true" formControlName="Kidney" inputId="a1" label="Kidney" /></div>
+            <div class="col-6 col-md-4"><p-checkbox [binary]="true" formControlName="Health" inputId="a2" label="Health" /></div>
+            <div class="col-6 col-md-4"><p-checkbox [binary]="true" formControlName="Disability" inputId="a3" label="Disability" /></div>
+            <div class="col-6 col-md-4"><p-checkbox [binary]="true" formControlName="Elders" inputId="a4" label="Elders" /></div>
+            <div class="col-6 col-md-4"><p-checkbox [binary]="true" formControlName="Scholarship" inputId="a5" label="Scholarship" /></div>
+            <div class="col-6 col-md-4"><p-checkbox [binary]="true" formControlName="Special" inputId="a6" label="Special" /></div>
+            <div class="col-6 col-md-4"><p-checkbox [binary]="true" formControlName="Aswesuma_1" inputId="a7" label="Aswesuma Rs 15000" /></div>
+            <div class="col-6 col-md-4"><p-checkbox [binary]="true" formControlName="Aswesuma_2" inputId="a8" label="Aswesuma Rs 10000" /></div>
+            <div class="col-6 col-md-4"><p-checkbox [binary]="true" formControlName="Aswesuma_3" inputId="a9" label="Aswesuma Vulnerable Rs 5000" /></div>
+            <div class="col-6 col-md-4"><p-checkbox [binary]="true" formControlName="Aswesuma_4" inputId="a10" label="Aswesuma Transient Rs 5000" /></div>
+            <div class="col-6 col-md-4"><p-checkbox [binary]="true" formControlName="Aswesuma_5" inputId="a11" label="Aswesuma Appeal" /></div>
+            <div class="col-6 col-md-4"><p-checkbox [binary]="true" formControlName="Aswesuma_6" inputId="a12" label="Aswesuma Cycle 2" /></div>
+            <div class="col-6 col-md-4"><p-checkbox [binary]="true" formControlName="Others" inputId="a13" label="Other" /></div>
+        </div>
+        <div class="mt-3" *ngIf="MemberForm.get('Others')?.value">
+            <textarea pInputTextarea formControlName="OthersDetails" rows="3" class="w-100" placeholder="Other aid details"></textarea>
+        </div>
+        <div class="d-flex justify-content-end flex-wrap gap-2 mt-4 pt-3 border-top">
+            <button pButton pRipple type="button" label="Cancel" severity="secondary" (click)="closeMemberDialog()"></button>
+            <button pButton pRipple type="submit" label="Save" icon="pi pi-check" severity="contrast"></button>
+        </div>
+    </form>
 </p-dialog>

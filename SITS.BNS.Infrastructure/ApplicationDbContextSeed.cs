@@ -27,7 +27,7 @@ namespace SITS.BNS.Infrastructure
                         Mobile = "077 203-8566",
                         IsActive = true,
                         Password = BCrypt.Net.BCrypt.HashPassword("123"),
-                        UserEmail = "chami2170@gmail.com",
+                        UserEmail = "chathura.ishan9@gmail.com",
                         CreatedBy = "SYS",
                         CreatedByName = "SYS",
                         CreatedDate = DateTime.Now.ToUniversalTime(),

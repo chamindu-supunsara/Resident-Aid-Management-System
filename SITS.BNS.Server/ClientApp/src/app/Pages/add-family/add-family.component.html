@@ -543,7 +543,7 @@
                 <div class="flex flex-column h-12rem">
                     <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
                         
-                        <div>
+                        <div class="w-100 text-start" [formGroup]="LeadGenerateForm">
                             <div class="row">
                                 <div class="col-12">
                                     <h4 style="font-weight: bold; color: black;">Summary</h4>
@@ -552,17 +552,85 @@
                             <hr>
                             <div class="row mt-2">
                                 <div class="col-12">
-                                    <h5 style="font-weight: bold; color: black;">House Information</h5>
+                                    <h5 style="font-weight: bold; color: black;">House information</h5>
                                 </div>
                             </div>
-                            <table cellpadding='2' cellspacing='0' style='border-collapse: collapse; width: 100%;'>
-                                <tr><td style='width: 15%;'><strong>House Hold No</strong></td><td style="white-space: normal; word-wrap: break-word;">: {{ leadData.HouseUnitNumber || 'NA' }}</td></tr>
-                                <tr><td style='width: 15%;'><strong>Sub No</strong></td><td style="white-space: normal; word-wrap: break-word;">: {{ leadData.SubNumber || 'NA' }}</td></tr>
-                                <tr><td style='width: 15%;'><strong>Householder Name</strong></td><td style="white-space: normal; word-wrap: break-word;">: {{ leadData.FullName.length > 40 ? leadData.FullName.substring(0, 40) + '...' : leadData.FullName || 'NA' }}</td></tr>
-                                <tr><td style='width: 15%;'><strong>Mobile No</strong></td><td style="white-space: normal; word-wrap: break-word;">: {{ leadData.Mobile || 'NA' }}</td></tr>
+                            <table cellpadding="2" cellspacing="0" class="mb-3" style="border-collapse: collapse; width: 100%;">
+                                <tr><td style="width: 18%;"><strong>House Hold No</strong></td><td style="white-space: normal; word-wrap: break-word;">: {{ houseUnitNumberControl?.value || 'NA' }}</td></tr>
+                                <tr><td><strong>Sub No</strong></td><td style="white-space: normal; word-wrap: break-word;">: {{ subNumberControl?.value || 'NA' }}</td></tr>
                             </table>
+
+                            <div class="row mt-2">
+                                <div class="col-12">
+                                    <h5 style="font-weight: bold; color: black;">Main member (householder)</h5>
+                                </div>
+                            </div>
+                            <table cellpadding="2" cellspacing="0" class="mb-3" style="border-collapse: collapse; width: 100%;">
+                                <tr><td style="width: 18%;"><strong>Full name</strong></td><td style="white-space: normal; word-wrap: break-word;">: {{ fullnameControl?.value || 'NA' }}</td></tr>
+                                <tr><td><strong>Birthday</strong></td><td>: {{ formatSummaryDate(birthdayControl?.value) }}</td></tr>
+                                <tr><td><strong>Gender</strong></td><td>: {{ dropdownLabel(selectedGenderControl?.value) }}</td></tr>
+                                <tr><td><strong>Marital status</strong></td><td>: {{ dropdownLabel(selectedMaritalStatus?.value) }}</td></tr>
+                                <tr><td><strong>NIC</strong></td><td style="white-space: normal; word-wrap: break-word;">: {{ nicControl?.value || 'NA' }}</td></tr>
+                                <tr><td><strong>Job</strong></td><td style="white-space: normal; word-wrap: break-word;">: {{ jobControl?.value || 'NA' }}</td></tr>
+                                <tr><td><strong>Mobile</strong></td><td>: {{ mobileControl?.value || 'NA' }}</td></tr>
+                                <tr><td><strong>Income</strong></td><td>: {{ incomeControl?.value != null && incomeControl?.value !== '' ? incomeControl?.value : 'NA' }}</td></tr>
+                            </table>
+
+                            <div class="row mt-2">
+                                <div class="col-12">
+                                    <h5 style="font-weight: bold; color: black;">Aid selections — main member</h5>
+                                </div>
+                            </div>
+                            <p class="mb-1" style="white-space: normal; word-wrap: break-word;"><strong>Selected aids:</strong> {{ formatAidSelections(aidSelections.value) }}</p>
+                            <p *ngIf="aidSelections.value?.includes('Other')" class="mb-2" style="white-space: normal; word-wrap: break-word;"><strong>Other aid details:</strong> {{ LeadGenerateForm.get('OtherAid')?.value || '—' }}</p>
+                            <hr class="mb-3" />
+
+                            <ng-container *ngIf="familyMembers.length > 0">
+                                <div class="row mt-2">
+                                    <div class="col-12">
+                                        <h5 style="font-weight: bold; color: black;">Additional family members</h5>
+                                    </div>
+                                </div>
+                                <div formArrayName="FamilyMembers">
+                                    <div *ngFor="let member of familyMembers.controls; let i = index" [formGroupName]="i" class="mb-4">
+                                        <h6 class="fw-bold">Family member {{ i + 1 }}</h6>
+                                        <table cellpadding="2" cellspacing="0" class="mb-2" style="border-collapse: collapse; width: 100%;">
+                                            <tr><td style="width: 18%;"><strong>Full name</strong></td><td style="white-space: normal; word-wrap: break-word;">: {{ member.get('FullName')?.value || 'NA' }}</td></tr>
+                                            <tr><td><strong>Birthday</strong></td><td>: {{ formatSummaryDate(member.get('Birthday')?.value) }}</td></tr>
+                                            <tr><td><strong>Gender</strong></td><td>: {{ dropdownLabel(member.get('selectedGender')?.value) }}</td></tr>
+                                            <tr><td><strong>Marital status</strong></td><td>: {{ dropdownLabel(member.get('selectedMaritalStatus')?.value) }}</td></tr>
+                                            <tr><td><strong>NIC</strong></td><td style="white-space: normal; word-wrap: break-word;">: {{ member.get('Nic')?.value || 'NA' }}</td></tr>
+                                            <tr><td><strong>Job</strong></td><td style="white-space: normal; word-wrap: break-word;">: {{ member.get('Job')?.value || 'NA' }}</td></tr>
+                                            <tr><td><strong>Mobile</strong></td><td>: {{ member.get('Mobile')?.value || 'NA' }}</td></tr>
+                                            <tr><td><strong>Income</strong></td><td>: {{ member.get('Income')?.value != null && member.get('Income')?.value !== '' ? member.get('Income')?.value : 'NA' }}</td></tr>
+                                        </table>
+                                        <p class="mb-1" style="white-space: normal; word-wrap: break-word;"><strong>Selected aids:</strong> {{ formatAidSelections(getFamilyMemberAidSelections(i).value) }}</p>
+                                        <p *ngIf="getFamilyMemberAidSelections(i).value?.includes('Other')" style="white-space: normal; word-wrap: break-word;"><strong>Other aid details:</strong> {{ getFamilyMemberOtherAid(i).value || '—' }}</p>
+                                    </div>
+                                </div>
+                            </ng-container>
+
+                            <ng-container *ngIf="familyChilds.length > 0">
+                                <div class="row mt-2">
+                                    <div class="col-12">
+                                        <h5 style="font-weight: bold; color: black;">Children</h5>
+                                    </div>
+                                </div>
+                                <div formArrayName="FamilyChilds">
+                                    <div *ngFor="let child of familyChilds.controls; let i = index" [formGroupName]="i" class="mb-4">
+                                        <h6 class="fw-bold">Child {{ i + 1 }}</h6>
+                                        <table cellpadding="2" cellspacing="0" class="mb-2" style="border-collapse: collapse; width: 100%;">
+                                            <tr><td style="width: 18%;"><strong>Full name</strong></td><td style="white-space: normal; word-wrap: break-word;">: {{ child.get('FullName')?.value || 'NA' }}</td></tr>
+                                            <tr><td><strong>NIC</strong></td><td style="white-space: normal; word-wrap: break-word;">: {{ child.get('Nic')?.value || 'NA' }}</td></tr>
+                                            <tr><td><strong>Birthday</strong></td><td>: {{ formatSummaryDate(child.get('Birthday')?.value) }}</td></tr>
+                                            <tr><td><strong>Gender</strong></td><td>: {{ dropdownLabel(child.get('selectedGender')?.value) }}</td></tr>
+                                        </table>
+                                        <p class="mb-1" style="white-space: normal; word-wrap: break-word;"><strong>Selected aids:</strong> {{ formatAidSelections(getFamilyChildAidSelections(i).value) }}</p>
+                                        <p *ngIf="getFamilyChildAidSelections(i).value?.includes('Other')" style="white-space: normal; word-wrap: break-word;"><strong>Other aid details:</strong> {{ getFamilyChildOtherAid(i).value || '—' }}</p>
+                                    </div>
+                                </div>
+                            </ng-container>
                         </div>
-                        <hr>
 
                     </div>
                 </div>

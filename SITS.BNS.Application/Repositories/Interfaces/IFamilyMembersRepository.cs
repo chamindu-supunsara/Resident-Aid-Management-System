@@ -13,6 +13,7 @@ namespace SITS.BNS.Application.Repositories.Interfaces
     {
         Task<ViewMemberDataDto> GetMemberbyID(int id);
         Task<int> UpdateMember(UpdateMemberDto req);
+        Task<int> AddMember(AddMemberDto req);
         Task<int> DeleteMember(DeleteMemberDto req);
     }
 }

@@ -66,6 +66,36 @@ export class UpdateMemberForm {
     OthersDetails: string = '';
 }
 
+/** Payload for POST api/Leads/AddMember */
+export class AddMemberForm {
+    FamilyId: number = 0;
+    IsChild: boolean = false;
+    FullName: string = '';
+    Nic: string = '';
+    Birthday: string = '';
+    MaritalStatus: string = '';
+    Gender: string = '';
+    Job: string = '';
+    Mobile: string = '';
+    Income: string = '';
+
+    Special: boolean = false;
+    Kidney: boolean = false;
+    Health: boolean = false;
+    Scholarship: boolean = false;
+    Disability: boolean = false;
+    Aswesuma_1: boolean = false;
+    Aswesuma_2: boolean = false;
+    Aswesuma_3: boolean = false;
+    Aswesuma_4: boolean = false;
+    Aswesuma_5: boolean = false;
+    Aswesuma_6: boolean = false;
+    Elders: boolean = false;
+    Others: boolean = false;
+
+    OthersDetails: string = '';
+}
+
 export class DeleteForm {
     ID: number = 0;
 }
